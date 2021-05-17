@@ -4,6 +4,7 @@ import { SearchLocationComponent } from './search-location.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { DirectivesModule } from '../directives.module';
+import { PipesModule } from '../pipes.module';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     CommonModule,
     DirectivesModule,
+    PipesModule,
     RouterModule.forChild(routes),
   ]
 })

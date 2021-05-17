@@ -4,9 +4,10 @@
   background-color: $primary;
   display: flex;
   align-items: center;
+  font-size: 15px;
   &--element {
     color: $white;
-    margin: 0 14px;
+    margin: 0 8px;
     padding: 6px 16px;
     border-radius: 26px;
     cursor: pointer;

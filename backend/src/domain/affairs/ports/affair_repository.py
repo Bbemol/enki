@@ -99,8 +99,6 @@ class InMemoryAffairRepository(AbstractAffairRepository):
         return polygon.contains(point)
 
     def _match_uuids(self, uuids: List[str]) -> List[AffairEntity]:
-        current_app.logger.info(f"uuids {uuids}")
-        current_app.logger.info(f"uuids {[affair.uuid for affair in self._affairs]}")
         matches = [affair for affair in self._affairs if affair.uuid in uuids]
         return matches
 

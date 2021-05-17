@@ -56,7 +56,6 @@ class PgGroupRepository(PgRepositoryMixin, AbstractGroupRepository):
         return matches
 
     def get_location_by_uuid(self, uuid: str) -> LocationEntity:
-        current_app.logger.info(f"Location uuid {uuid}")
         matches = self.session.query(LocationEntity).filter(
             LocationEntity.uuid == uuid).all()
         if not matches:

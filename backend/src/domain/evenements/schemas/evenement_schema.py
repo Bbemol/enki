@@ -5,9 +5,10 @@ from flask import current_app
 from marshmallow import Schema, fields, post_load, validate
 from marshmallow_enum import EnumField
 from werkzeug.exceptions import HTTPException
-
-from domain.evenements.entities.evenement_entity import EvenementType, EvenementEntity, EvenementRoleType, \
+from domain.evenements.entities.evenement_type import EvenementType
+from domain.evenements.entities.evenement_entity import EvenementEntity, EvenementRoleType, \
     UserEvenementRole
+
 from domain.users.schemas.group import LocationSchema
 from domain.users.schemas.user import UserSchema
 

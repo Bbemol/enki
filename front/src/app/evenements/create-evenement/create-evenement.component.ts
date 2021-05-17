@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Evenement, EvenementsService, EvenementType } from '../evenements.service';
-import { Router } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { EvenementsService } from '../evenements.service';
+import { Evenement, EvenementType, ToastType } from 'src/app/interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SearchLocationService } from 'src/app/search-location/search-location.service';
-import { HTTP_DATA } from 'src/app/constants';
-import { pluck } from 'rxjs/operators';
+import { HTTP_DATA } from 'src/app/constants/constants';
+import { catchError, pluck } from 'rxjs/operators';
+import { AffairesService } from 'src/app/affaires/affaires.service';
+import { ToastService } from 'src/app/toast/toast.service';
 
 @Component({
   selector: 'app-create-evenement',
@@ -29,6 +32,7 @@ export class CreateEvenementComponent implements OnInit {
   evenement: object;
   httpOptions: object;
   todayDay: Date;
+  attachAffaireUUID: string;
   public EvenementTypeEnum = EvenementType;
 
   constructor(
@@ -36,17 +40,19 @@ export class CreateEvenementComponent implements OnInit {
     private evenementsService: EvenementsService,
     private router: Router,
     private searchLocationService: SearchLocationService,
+    private affairesService: AffairesService,
+    private activatedRoute: ActivatedRoute,
+    private toastService: ToastService,
   ) {
+    this.attachAffaireUUID = this.activatedRoute.snapshot.queryParams['affaireUUID'];
     this.todayDay = new Date();
     this.evenementUrl = `${environment.backendUrl}/events`
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-      })
-    }
     this.searchLocationService.selectedEtablissement.subscribe(location => {
       this.evenementGroup.controls.location.setValue(location.label)
     })
+  }
+  close(): void {
+    this.router.navigate(['/evenements']);
   }
 
   ngOnInit(): void {
@@ -64,20 +70,35 @@ export class CreateEvenementComponent implements OnInit {
     }
     this.httpFormSubmit(formBody).subscribe(response => {
       this.evenementsService.addOrUpdateEvenement(response)
-      this.router.navigate([`evenements/${response.uuid}`])
+      if (this.attachAffaireUUID) {
+        this.affairesService.attachEvenementToAffaire(response.uuid, this.attachAffaireUUID).subscribe(() => {
+          this.router.navigate([`evenements/${response.uuid}`])
+        });
+      } else {
+        this.router.navigate([`evenements/${response.uuid}`])
+      }
     })
   }
 
   goToSearchLocation(): void {
-    // this.router.navigate([''])
-    this.router.navigate([`evenements/create/searchlocation`])
+    this.router.navigate([`searchlocation`], { relativeTo: this.activatedRoute})
 
   }
 
   httpFormSubmit(formBody): Observable<Evenement> {
-    return this.http.post<any>(this.evenementUrl, formBody, this.httpOptions).pipe(
-      pluck(HTTP_DATA)
+    return this.http.post<any>(this.evenementUrl, formBody).pipe(
+      pluck(HTTP_DATA),
+      catchError((error) => {
+        this.toastService.addMessage(`Impossible de créer l'événement`, ToastType.ERROR);
+        return throwError(error);
+      })
     )
+  }
+  ngAfterViewInit(): void {
+    document.querySelector('.base').scroll(0,0)
+  }
+  ngOnDestroy(): void {
+    this.searchLocationService.resetSelectedLocation();
   }
 
 }

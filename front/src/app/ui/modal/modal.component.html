@@ -1,8 +1,13 @@
 <div class="enki-modal" *ngIf="isOpened">
   <div class="enki-modal--overlay" (click)="close()"></div>
-  <div class="enki-modal--wrapper">
-    <!-- <a class="" (click)="close()">Quit</a> -->
-    <!-- modal works! -->
+  <div class="enki-modal--wrapper" [class]="mobilePrototype.getCheckedClass()">
+    <h2 class="h3-title enki-modal--title" *ngIf="title">{{title}}</h2>
+    <p class="enki-modal--description" *ngIf="description">
+      {{description}}
+    </p>
+    <a class="enki-modal--close" (click)="close()">
+      <svg class="icon-close-big icon"><use xlink:href="#icon-close-big"></use></svg>
+    </a>
     <ng-content></ng-content>
   </div>
 </div>

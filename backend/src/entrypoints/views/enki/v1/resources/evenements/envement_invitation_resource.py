@@ -1,8 +1,9 @@
-from flask import current_app
+from flask import current_app, g
 from flask_restful import Resource, reqparse
 
 from domain.evenements.entities.evenement_entity import EvenementRoleType
 from domain.evenements.services.evenement_service import EvenementService
+from domain.users.services.authorization_service import AuthorizationService
 from entrypoints.middleware import user_info_middleware
 
 
@@ -84,6 +85,10 @@ class EvenementInviteUserResource(WithEvenementRepoResource):
     method_decorators = [user_info_middleware]
 
     def put(self, uuid: str, user_uuid: str):
+        AuthorizationService.as_access_to_this_evenement_resource(g.user_info["id"],
+                                                                  evenement_id=uuid,
+                                                                  role_type=EvenementRoleType.ADMIN,
+                                                                  uow=current_app.context)
         parser = reqparse.RequestParser()
         parser.add_argument('role_type', type=str, required=False,     choices=([e.value for e in EvenementRoleType]))
 
@@ -104,6 +109,8 @@ class EvenementInviteUserResource(WithEvenementRepoResource):
                }, 201
 
     def delete(self, uuid: str, user_uuid: str):
+        AuthorizationService.as_access_to_this_evenement_resource(g.user_info["id"], evenement_id=uuid,
+                                                                  role_type=EvenementRoleType.ADMIN, uow=current_app.context)
         result = EvenementService.revoke_access(uuid=uuid,
                                                 user_id=user_uuid,
                                                 uow=current_app.context)

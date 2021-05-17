@@ -10,11 +10,11 @@
       <svg class="icon-sun icon"><use xlink:href="#icon-sun"></use></svg>
       Événements
     </h2>
-    <li class="intervention list--element" *ngFor="let intervention of interventions | slice:0:3">
-      <a class="intervention--wrapper list--wrapper" routerLink="/detail-intervention/{{intervention.uuid}}">
+    <li class="affaire list--element" *ngFor="let affaire of affaires | slice:0:3">
+      <a class="affaire--wrapper list--wrapper" routerLink="/detail-affaire/{{affaire.uuid}}">
         <div class="secondInfos">
           <div class="secondInfos--dateTime">
-            {{intervention.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
+            {{affaire.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
           </div>
           <div class="badge">
             En cours
@@ -22,7 +22,7 @@
         </div>
         <div class="mainInfos -hasIcon">
           <div class="mainInfos--title">
-            {{intervention.natureDeFait}}
+            {{affaire.natureDeFait}}
           </div>
           <div class="mainInfos--icon">
             <img src="assets/natureDeFaits/Incendies.png" alt="">
@@ -36,23 +36,18 @@
       <svg class="icon-sun icon"><use xlink:href="#icon-sun"></use></svg>
       Météo
     </h2>
-    <div class="meteo--image">
-      <img src="assets/meteo-chelles.png" alt="">
-    </div>
+    <iframe id="widget_autocomplete_preview" frameborder="0" [src]="meteoIframeLink"></iframe>
   </div>
-  <ul class="interventions dashboard--widget">
-    <!-- <div class="sub-title">
-      Chelles
-    </div> -->
-    <h2 class="interventions--title title-with-icon">
+  <ul class="affaires dashboard--widget">
+    <h2 class="affaires--title title-with-icon">
       <svg class="icon-post-it icon"><use xlink:href="#icon-post-it"></use></svg>
-      Derniers appels de secours
+      Dernières affaires
     </h2>
-    <li class="intervention list--element" *ngFor="let intervention of interventions | slice:0:3">
-      <a class="intervention--wrapper list--wrapper" routerLink="/detail-intervention/{{intervention.uuid}}">
+    <li class="affaire list--element" *ngFor="let affaire of affaires | slice:0:3">
+      <a class="affaire--wrapper list--wrapper" routerLink="/detail-affaire/{{affaire.uuid}}">
         <div class="secondInfos">
           <div class="secondInfos--dateTime">
-            {{intervention.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
+            {{affaire.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
           </div>
           <div class="badge">
             En cours
@@ -60,25 +55,25 @@
         </div>
         <div class="mainInfos -hasIcon">
           <div class="mainInfos--title">
-            {{intervention.natureDeFait}}
+            {{affaire.natureDeFait}}
           </div>
-          <div class="mainInfos--icon">
+          <!-- <div class="mainInfos--icon">
             <img src="assets/natureDeFaits/Incendies.png" alt="">
-          </div>
+          </div> -->
         </div>
       </a>
     </li>
-    <div class="interventions--seeMore" *ngIf="interventions.length > 0">
-      <a routerLink="/interventions">
+    <div class="affaires--seeMore" *ngIf="affaires.length > 0">
+      <a routerLink="/affaires">
         <svg class="icon-add title-icon"><use xlink:href="#icon-add"></use></svg>
-        <span>Voir plus d'appels de secours</span>
+        <span>Voir plus d'affaires</span>
       </a>
     </div>
-    <div class="interventions--noInterventions" *ngIf="interventions.length === 0">
-      Pas d'appels de secours en cours
+    <div class="affaires--noAffaires" *ngIf="affaires.length === 0">
+      Pas d'affaire en cours
     </div>
   </ul>
-  <div class="vigicrue dashboard--widget">
+  <!-- <div class="vigicrue dashboard--widget">
     <h2 class="title-with-icon">
       <svg class="icon-water icon"><use xlink:href="#icon-water"></use></svg>
       Vigicrue
@@ -86,7 +81,7 @@
     <div class="vigicrue--image">
       <img src="assets/vigicrue.png" alt="">
     </div>
-  </div>
+  </div> -->
 <!--   <div class="annuaire dashboard--widget">
     <h2 class="title-with-icon">
       <svg class="icon-contacts icon"><use xlink:href="#icon-contacts"></use></svg>
@@ -101,11 +96,11 @@
       <svg class="icon-stats icon"><use xlink:href="#icon-stats"></use></svg>
       En chiffres
     </h2> -->
-    <div class="stats--image">
+    <!-- <div class="stats--image">
       <img src="assets/chiffres.png" alt="">
-    </div>
+    </div> -->
   </div>
-  <div class="reseaux-sociaux dashboard--widget">
+  <!-- <div class="reseaux-sociaux dashboard--widget">
     <div class="sub-title">
       @mairieivry
     </div>
@@ -128,5 +123,5 @@
     <div class="stats--image">
       <img src="assets/actus.png" alt="">
     </div>
-  </div>
+  </div> -->
 </div>

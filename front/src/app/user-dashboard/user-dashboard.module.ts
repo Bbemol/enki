@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { RouterModule } from '@angular/router';
+import { DirectivesModule } from '../directives.module';
 
 @NgModule({
   declarations: [
@@ -9,6 +10,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
+    DirectivesModule,
     RouterModule
   ],
   exports: [

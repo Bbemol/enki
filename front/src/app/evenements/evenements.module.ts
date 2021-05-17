@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { AuthGuard } from '../app-auth-guard.service';
 import { CreateEvenementComponent } from './create-evenement/create-evenement.component';
 import { DetailEvenementComponent } from './detail-evenement/detail-evenement.component';
 import { SummaryEvenementComponent } from './summary-evenement/summary-evenement.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MainCouranteComponent } from './main-courante/main-courante.component';
 import { AddMessageComponent } from './main-courante/add-message/add-message.component';
 import { AddLabelComponent } from './main-courante/add-label/add-label.component';
+
 import { FilterLabelsPipe } from './main-courante/add-label/filter-labels.pipe';
+import { FilterMessagesPipe } from './main-courante/filter-messages.pipe';
+
 import { DetailMessageComponent } from './main-courante/detail-message/detail-message.component';
 import { EvenementDetailResolverService } from './evenement-detail-resolver.service';
 import { ListeMainCouranteComponent } from './main-courante/liste-main-courante/liste-main-courante.component';
@@ -18,9 +22,15 @@ import { UiModule } from '../ui/ui.module';
 import { UserInfoGuard } from '../guards/user-info.guard';
 import { ShareEvenementComponent } from './share-evenement/share-evenement.component';
 import { SearchUserComponent } from './share-evenement/search-user/search-user.component';
-import { FilterMessagesPipe } from './main-courante/filter-messages.pipe';
 import { FilterMessagesComponent } from './main-courante/filter-messages/filter-messages.component';
 import { SearchLocationComponent } from '../search-location/search-location.component';
+import { DirectivesModule } from '../directives.module';
+import { CanDeactivateGuard } from '../guards/can-deactivate.guard';
+import { PipesModule } from '../pipes.module';
+import { ListeEvenementsComponent } from './liste-evenements/liste-evenements.component';
+import { TabbarComponent } from './tabbar/tabbar.component';
+import { ParticipantsComponent } from './participants/participants.component';
+import { ShareTabComponent } from './share-tab/share-tab.component';
 
 
 const routes : Routes = [
@@ -32,6 +42,10 @@ const routes : Routes = [
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'
+      },
+      {
+        path: 'evenements',
+        component: ListeEvenementsComponent
       },
       {
         path: 'evenements/create',
@@ -67,40 +81,39 @@ const routes : Routes = [
             children: [
               {
                 path: '',
+                pathMatch: 'full',
                 redirectTo: 'liste',
-                pathMatch: 'full'
               },
               {
                 path: 'liste',
-                component: ListeMainCouranteComponent
-              },
-              {
-                path: 'filters',
-                component: FilterMessagesComponent
-              },
-              {
-                path: 'detailmessage/:uuid',
-                component: DetailMessageComponent
-              },
-              {
-                path: 'addmessage',
-                component: AddMessageComponent,
+                component: ListeMainCouranteComponent,
                 children: [
                   {
-                    path: 'addlabel',
-                    component: AddLabelComponent
-                  }
+                    path: 'message/:uuid',
+                    component: DetailMessageComponent
+                  },
+                  {
+                    path: 'addmessage',
+                    component: AddMessageComponent,
+                    canDeactivate: [CanDeactivateGuard],
+                    children: [
+                      {
+                        path: 'addlabel',
+                        component: AddLabelComponent
+                      }
+                    ]
+                  },
                 ]
-              }
+              },
             ]
           },
           {
             path: 'share',
-            component: ShareEvenementComponent,
+            component: ShareTabComponent,
             children: [
               {
                 path: 'searchuser',
-                component: SearchUserComponent
+                component: SearchUserComponent,
               }
             ]
           }
@@ -112,6 +125,7 @@ const routes : Routes = [
 
 @NgModule({
   declarations: [
+    ListeEvenementsComponent,
     CreateEvenementComponent,
     DetailEvenementComponent,
     MainCouranteComponent,
@@ -125,11 +139,16 @@ const routes : Routes = [
     SearchUserComponent,
     FilterMessagesPipe,
     FilterMessagesComponent,
+    TabbarComponent,
+    ParticipantsComponent,
+    ShareTabComponent,
   ],
   providers: [
     MessagesService,
   ],
   imports: [
+    DirectivesModule,
+    PipesModule,
     UiModule,
     CommonModule,
     ReactiveFormsModule,

@@ -30,6 +30,7 @@ class UserSchema(Schema):
     uuid = fields.Str(missing=lambda: str(uuid4()))
     first_name = fields.Str(required=True)
     last_name = fields.Str(required=True)
+    email = fields.Str(required=True)
     position_id = fields.Str(required=True)
     group_id = fields.Str(required=True, load_only=True)
     group_type = fields.Str(validate=validate.OneOf([e.value for e in GroupType]))

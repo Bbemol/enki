@@ -10,6 +10,7 @@ from domain.affairs.entities.affair_entity import AffairEntity
 from domain.affairs.entities.simple_affair_entity import SimpleAffairEntity
 from domain.affairs.schema.simple_affair import SimpleAffairSchema
 from domain.evenements.entities.evenement_entity import EvenementEntity
+from domain.evenements.services.message_service import MessageService
 from domain.users.entities.user import UserEntity
 from service_layer.unit_of_work import AbstractUnitOfWork
 
@@ -39,6 +40,7 @@ class AffairService:
             evenement: EvenementEntity = uow.evenement.get_by_uuid(uuid=evenement_id)
             affair: SimpleAffairEntity = uow.simple_affair.get_by_uuid(uuid=affair_id)
             evenement.add_affair(affair=affair)
+            MessageService.add_message_from_affair(affair=affair, evenement=evenement, uow=uow)
             return SimpleAffairSchema().dump(affair)
 
     @staticmethod

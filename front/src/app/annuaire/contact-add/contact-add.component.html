@@ -1,4 +1,4 @@
-<app-small-heading title="Nouveau contact" backLink="/annuaire/contactlist"></app-small-heading>
+<app-small-heading title="Nouveau contact" (closeEvent)="closeContactAdd()"></app-small-heading>
 <div class="contact-add">
   <div class="title-container">
     <h1 class="h2-title">Créer un nouveau contact</h1>
@@ -16,7 +16,7 @@
       <label for="firstName" class="enkiform__label">Prénom</label>
     </div>
     <div class="enkiform__group">
-      <select class="enkiform__input" id="group" formControlName="group" required>
+      <select class="enkiform__input enkiform__select" id="group" formControlName="group" required>
         <option *ngFor="let userType of userTypes" value="{{userType}}">{{userType | titlecase}}</option>
       </select>
       <label for="group" class="enkiform__label">Type d'établissement</label>
@@ -28,7 +28,7 @@
       <svg class="icon-search icon"><use xlink:href="#icon-search"></use></svg>
     </div>
     <div class="enkiform__group">
-      <select class="enkiform__input" id="position" formControlName="position" required [attr.disabled]="contactGroup.value.group == '' ? true : null">
+      <select class="enkiform__input enkiform__select" id="position" formControlName="position" required [attr.disabled]="contactGroup.value.group == '' ? true : null">
         <option *ngFor="let userPosition of userPositions" [value]="userPosition.uuid">{{userPosition.label}}</option>
       </select>
       <label for="position" class="enkiform__label">Fonction</label>
@@ -48,7 +48,7 @@
       <input type="text" class="enkiform__input" id="address" formControlName="address" required>
       <label for="address" class="enkiform__label">Adresse</label>
     </div>
-    <div class="enkiSpecialForm__group">
+    <div>
       <input type="submit" class="btn" value="Enregistrer" id="test--add-contact">
     </div>
   </form>

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-small-heading',
@@ -7,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
       <div class="small-heading--title">
         {{title}}
       </div>
-      <div class="small-heading--close" routerLink="{{backLink}}">
+      <div class="small-heading--close" (click)="close()">
         Fermer
         <svg class="icon-close title-icon"><use xlink:href="#icon-close"></use></svg>
       </div>
@@ -17,8 +18,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SmallHeadingComponent implements OnInit {
   @Input() title: string;
-  @Input() backLink: string;
-  constructor() { }
+  @Output() closeEvent = new EventEmitter();
+  constructor(
+  ) { }
+
+  close(): void {
+    this.closeEvent.emit();
+  }
 
   ngOnInit(): void {
   }

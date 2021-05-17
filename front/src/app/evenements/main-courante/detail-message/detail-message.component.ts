@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MobilePrototypeService } from 'src/app/mobile-prototype/mobile-prototype.service';
-import { UserService } from 'src/app/user/user.service';
-import { Message, MessagesService } from '../messages.service';
+import { MessagesService } from '../messages.service';
+import { Message } from 'src/app/interfaces';
+import { MESSAGE_INIT } from '../../../constants/message_init';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-detail-message',
@@ -17,26 +19,23 @@ export class DetailMessageComponent implements OnInit {
   constructor(
     private messagesService: MessagesService,
     private route: ActivatedRoute,
-    public mobilePrototype: MobilePrototypeService
+    public mobilePrototype: MobilePrototypeService,
+    private router: Router,
   ) {
-    /* this.message = {
-      title: '',
-      description: '',
-      created_at: '',
-      uuid: '',
-      tags: [],
-      resources: [],
-      evenement_id: ''
-    } */
+    this.message = MESSAGE_INIT;
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.messageUUID = params['uuid']
+      this.messageUUID = params['uuid'];
       this.messagesService.getMessageByID(this.messageUUID).subscribe(message => {
-        this.message = message
+        this.message = message;
       })
     })
+  }
+
+  goBack(): void {
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
 }

@@ -1,0 +1,40 @@
+<div class="participants" *ngIf="(participants | async).length > 0">
+  <h2 class="participants--title title-with-icon">
+    <svg class="icon-user icon"><use xlink:href="#icon-user"></use></svg>
+    {{participants.length}} PARTICIPANTS
+  </h2>
+  <div class="participants--user" *ngFor="let participant of participants | async">
+    <div class="list-participants--primaryInfos">
+      {{participant.user.position.group.label}} - {{participant.user.position.position.label}}
+    </div>
+    <div class="participants--secondaryInfos">
+      {{participant.user.last_name}} {{participant.user.first_name}}
+    </div>
+    <a class="participants--role test--changeParticipantRole"
+         (click)="participant.type==='creator' ? null : showEditParticipantRights(participant)">
+      {{mapUserRoleToLabel(participant.type)}}
+      <svg class="icon-chevron icon" *ngIf="participant.type!='creator'"><use xlink:href="#icon-chevron"></use></svg>
+    </a>
+  </div>
+</div>
+<app-modal (closed)="removeSelectedParticipant($event)">
+  <!-- {{selectedParticipant | json}} -->
+  <div *ngIf="selectedParticipant">
+    <div class="participants--infos">
+      <div class="participants--primaryInfos">
+        {{selectedParticipant.user.position.group.label}} - {{selectedParticipant.user.position.position.label}}
+      </div>
+      <div class="participants--secondaryInfos">
+        {{selectedParticipant.user.last_name}} {{selectedParticipant.user.first_name}}
+      </div>
+    </div>
+    <div class="participants--roles">
+      <form [formGroup]="roleGroup">
+        <div class="enkiform__group radio-roles" *ngFor="let role of roles | keyvalue">
+          <input type="radio" class="enkiform__radio" formControlName="role" id="{{role.key}}" value="{{role.key}}" />
+          <label for="{{role.key}}">{{role.value}}</label>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-modal>

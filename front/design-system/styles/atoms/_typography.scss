@@ -1,6 +1,9 @@
 .title-container {
-    padding: 0 16px 20px 16px;
+    padding: 16px 20px;
     position: relative;
+    @include mediaquery(desktop) {
+        padding: 16px;
+    }
     &.-reversed {
         background: $primary;
         padding: 16px;
@@ -26,13 +29,9 @@
             background: $lightGrey;
         }
     }
-    .badge {
-        margin-bottom: 24px;
-    }
 }
 
 .goTo {
-    margin-bottom: 20px;
     padding: 0 16px;
     color: $darkestGrey;
     display: flex;
@@ -40,6 +39,8 @@
     font-family: $secondaryFont;
     letter-spacing: 0.5px;
     font-size: 17px;
+    cursor: pointer;
+    height: 56px;
     svg {
         margin-right: 8px;
     }
@@ -76,9 +77,7 @@
     }
 }
 .-emphasize {
-    font-family: $secondaryFont;
-    font-weight: 500;
-    color: $lighterPrimary;
+    color: $primary;
 }
 .subtitle {
     color: $darkestGrey;
@@ -89,7 +88,7 @@
 
 
 .h2-title  {
-    font-weight: 500;
+    font-weight: 700;
     font-size: rem-calc(24);
     line-height: 28px;
     letter-spacing: 0.5px;

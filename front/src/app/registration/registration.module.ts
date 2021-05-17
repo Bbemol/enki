@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { RegisterService } from './register.service';
 import { UserInfoGuard } from '../guards/user-info.guard';
 import { SearchEtablissementComponent } from '../search-etablissement/search-etablissement.component';
+import { DirectivesModule } from '../directives.module';
 // import { AuthGuard } from '../app-auth-guard.service';
 
 const routes : Routes = [
@@ -42,6 +43,7 @@ const routes : Routes = [
   ],
   providers: [ RegisterService ],
   imports: [
+    DirectivesModule,
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)

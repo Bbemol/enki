@@ -1,0 +1,35 @@
+@import "../../../design-system/styles/variables";
+.toast {
+  box-sizing: border-box;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: $red;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: disappear;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+
+  &--message {
+    display: flex;
+    align-content: center;
+    overflow: hidden;
+  }
+  &--close {
+    display: flex;
+    align-content: center;
+    svg {
+      fill: $white;
+    }
+  }
+}
+
+@keyframes disappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

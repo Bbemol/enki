@@ -12,7 +12,7 @@
     <label for="firstName" class="enkiform__label">Prénom</label>
   </div>
   <div class="enkiform__group">
-    <select class="enkiform__input" id="group" formControlName="group" required [attr.disabled]="userGroupPreFilled ? true : null">
+    <select class="enkiform__input enkiform__select" id="group" formControlName="group" required [attr.disabled]="userGroupPreFilled ? true : null">
       <option *ngFor="let userType of userTypes" value="{{userType}}">{{userType | titlecase}}</option>
     </select>
     <label for="group" class="enkiform__label">Type d'établissement</label>
@@ -24,7 +24,7 @@
     <svg class="icon-search icon"><use xlink:href="#icon-search"></use></svg>
   </div>
   <div class="enkiform__group">
-    <select class="enkiform__input" id="position" formControlName="position" required [attr.disabled]="userGroup.value.group == '' ? true : null">
+    <select class="enkiform__input enkiform__select" id="position" formControlName="position" required [attr.disabled]="userGroup.value.group == '' ? true : null">
       <option *ngFor="let userPosition of userPositions" [value]="userPosition.uuid">{{userPosition.label}}</option>
     </select>
     <label for="position" class="enkiform__label">Fonction</label>

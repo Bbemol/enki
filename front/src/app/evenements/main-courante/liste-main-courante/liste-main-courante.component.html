@@ -1,37 +1,28 @@
-<a class="goTo" routerLink="/evenements">
-  <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
-  Retour à la liste des événements
-</a>
-<div class="title-container">
-  <h1 class="h2-title">Main courante</h1>
-  <div class="subtitle">
-    Mis à jour il y a une minute
-  </div>
-  <div *ngIf="messages.length > 0" class="action action--export" (click)="exportMainCourante()">
-    <svg class="icon-download icon"><use xlink:href="#icon-download"></use></svg>
-  </div>
-</div>
-<div class="mc" [class]="mobilePrototype.getCheckedClass()">
-  <div class="head-tab">
-    <div class="head-tab--element -active">
-      Messages
+<div class="mc">
+  <div class="title-container -bottomLine">
+    <h1 class="h2-title">Main courante</h1>
+    <div class="subtitle">
+      Mis à jour il y a une minute
     </div>
-    <!-- <div class="head-tab--element">
-      Liste des actions
-    </div> -->
+    <div *ngIf="messages.length > 0" class="action action--export" (click)="openModal()">
+      <svg class="icon-download icon"><use xlink:href="#icon-download"></use></svg>
+    </div>
   </div>
   <div class="mc--content">
     <div class="mc--empty" *ngIf="!(messages.length > 0) ">
       Le dossier est vide, créez une nouvelle main courante pour démarrer le partage.
-      <button class="btn" routerLink="../addmessage">Ajouter un nouveau message</button>
+      <button class="btn" routerLink="./addmessage">Ajouter un nouveau message</button>
     </div>
     <ul class="list">
-      <li class="list--element" *ngFor="let message of messages | filterMessages:currentEventFilter" [ngClass]="message.creator.uuid === user.uuid ? '-right': ''">
+      <li class="list--element" *ngFor="let message of messages | filterMessages:currentEventFilter" [ngClass]="message.creator && message.creator.uuid === user.uuid ? '-right': ''">
         <a (click)="clickOnMessage(message)">
           <div class="list--wrapper">
             <div class="secondInfos">
-              <div class="badge" [ngClass]="(message.creator.position.group.type === 'PREFECTURE') ? 'badge__blueFill' :'badge__greenFill'">
-                {{message.creator.position.group.label}}
+              <div class="badge" *ngIf="message.creator" [class]="getCreatorCSSClass(message.creator.position.group.type)">
+                <div class="badge__troncated">{{message.creator.position.group.label}}</div>
+              </div>
+              <div class="badge" *ngIf="!message.creator" [ngClass]="(message.type === 'affair') ? 'badge__redFill' :''">
+                SDIS
               </div>
               <div class="secondInfos--dateTime">
                 {{message.created_at | date:"HH:mm"}}
@@ -39,11 +30,17 @@
             </div>
             <div class="contentInfos">
               <div class="mainInfos">
-                <div class="mainInfos--title" [ngClass]="(message.creator.position.group.type === 'PREFECTURE' ? '-blue' : '-green')">
+                <div class="mainInfos--title" *ngIf="message.creator" [class]="getCreatorCSSClass(message.creator.position.group.type)">
+                  <span *ngIf="message.restricted">
+                    <svg class="icon-lock icon"><use xlink:href="#icon-lock"></use></svg>
+                  </span>
                   {{message.creator.position.position.label}} —
                 </div>
+                <div class="mainInfos--title -red" *ngIf="!message.creator">
+                  CODIS —
+                </div>
                 <div class="mainInfos--content">
-                  {{ message.title }}
+                  {{ message.title }}<br />
                 </div>
               </div>
               <div class="list--labels" *ngIf="message.tags.length > 0">
@@ -60,10 +57,35 @@
       </li>
     </ul>
   </div>
-  <div class="action action--filter" routerLink="../filters" *ngIf="messages.length > 0">
-    <svg class="icon-filter icon"><use xlink:href="#icon-filter"></use></svg>
+  <app-modal title="Exporter" description="Télécharger la main courante avec les filtres que vous avez appliqué.">
+    <div class="enkiform__group radio-export">
+      <input type="radio" class="enkiform__radio" [formControl]="exportType" id="xlsx" value="xlsx" />
+      <label for="xlsx">Excel</label>
+    </div>
+    <div class="enkiform__group radio-export">
+      <input type="radio" class="enkiform__radio" [formControl]="exportType" id="pdf" value="pdf" />
+      <label for="pdf">PDF</label>
+    </div>
+    <button class="btn -icon" (click)="exportMainCourante()">
+      <svg class="icon-download icon"><use xlink:href="#icon-download"></use></svg>
+      Télécharger
+    </button>
+  </app-modal>
+  <div class="actions">
+    <div class="action actions--element u-hidden-mobile" routerLink="./addmessage">
+      <svg class="icon icon-video"><use xlink:href="#icon-video"></use></svg>
+    </div>
+    <div class="action actions--element u-hidden-desktop" (click)="openFilters()" *ngIf="messages.length > 0">
+      <div class="filter-pastille" [class.-active]="listIsFiltered()"></div>
+      <svg class="icon-filter icon"><use xlink:href="#icon-filter"></use></svg>
+    </div>
+    <div class="action actions--element" routerLink="./addmessage" *ngIf="messages.length > 0">
+      <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
+    </div>
   </div>
-  <div class="action action--add" routerLink="../addmessage" *ngIf="messages.length > 0">
-    <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
-  </div>
+  
 </div>
+<div class="mc--colright">
+  <app-filter-messages [messages]="messages" [class.-active]="showFilters" (closeFilterEvent)="hideFilters()"></app-filter-messages>
+</div>
+<router-outlet></router-outlet>

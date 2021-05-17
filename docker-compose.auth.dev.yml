@@ -1,0 +1,32 @@
+version: '3.4'
+
+networks:
+  default:
+    driver: bridge
+  enki_default:
+    external: true
+
+services:
+  keycloak-db:
+    image: postgres
+    env_file:
+      - .envs/.local/.env.auth
+    networks:
+      - default
+
+  keycloak:
+    build:
+      context: authentication
+      dockerfile: Dockerfile
+    env_file:
+      - .envs/.local/.env.auth
+    volumes:
+      - ./authentication/realms/enki-realm-export.json:/tmp/enki-realm-export.json
+        # surcharge de config pour que le theme n'ait pas de cache et qu'on puisse bosser dessus
+      - ./authentication/standalone-ha.xml:/opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
+      - ./authentication/enki-theme/:/opt/jboss/keycloak/themes/enki-theme
+    networks:
+      - default
+      - enki_default
+    ports:
+    - "8080:8080"

@@ -5,21 +5,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { interval, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, debounce, pluck, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { HTTP_DATA } from '../constants';
+import { HTTP_DATA, SEARCH_MIN_CHARS } from '../constants/constants';
 import { SearchEtablissementService } from './search-etablissement.service';
-import { Location } from '../interfaces/Location';
+import { Group } from 'src/app/interfaces';
+import { HighlightIncludedCharsPipe } from '../highlight-included-chars.pipe';
 
 @Component({
   selector: 'app-search-etablissement',
-  templateUrl: './search-etablissement.component.html'
-  // styleUrls: ['./search-etablissement.component.scss']
+  templateUrl: './search-etablissement.component.html',
+  providers: [HighlightIncludedCharsPipe],
 })
 export class SearchEtablissementComponent implements OnInit {
 
   etablissementSearch = new FormControl('', Validators.required);
   subject = new Subject();
-  etablissementResults$: Observable<Location[]>;
-  etablissementResults: Location[];
+  etablissementResults$: Observable<Group[]>;
+  etablissementResults: Group[];
   groupType: string;
 
 
@@ -28,6 +29,7 @@ export class SearchEtablissementComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private etablissementService: SearchEtablissementService,
+    private highlightTransform: HighlightIncludedCharsPipe,
   ) {
     this.groupType = this.route.snapshot.queryParams.groupType
 
@@ -54,7 +56,7 @@ export class SearchEtablissementComponent implements OnInit {
     });
 
     this.etablissementSearch.valueChanges.subscribe((value: string) => {
-      if (value.length > 2) {
+      if (value.length >= SEARCH_MIN_CHARS) {
         this.subject.next(value)
       }
     });
@@ -63,7 +65,14 @@ export class SearchEtablissementComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectEtablissement(etablissement: Location): void {
+  getEtablissementLabel(etablissement: Group, searchvalue: string): string {
+    const label = this.highlightTransform.transform(etablissement.label, searchvalue)
+    const external_id = this.highlightTransform.transform(etablissement.location.external_id, searchvalue)
+
+    return `${label} (${external_id})`
+  }
+
+  selectEtablissement(etablissement: Group): void {
     this.etablissementService.setSelectedEtablissement(etablissement)
     this.router.navigate([`..`], {relativeTo: this.route})
   }

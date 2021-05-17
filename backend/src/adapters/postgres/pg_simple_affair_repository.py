@@ -46,8 +46,6 @@ class PgSimpleAffairRepository(PgRepositoryMixin, AbstractSimpleAffairRepository
         return matches
 
     def match_polygons(self, polygon: Union[List, str]) -> List[SimpleAffairEntity]:
-        current_app.logger.info(f"Polygon {polygon}")
-        current_app.logger.info(f"Type(Polygon) {type(polygon)}")
         if isinstance(polygon, list):
             polygon_query_string = f"POLYGON(({' ,'.join([' '.join([str(e[1]), str(e[0])]) for e in polygon])}))"
         elif isinstance(polygon, WKBElement):

@@ -11,7 +11,6 @@ def user_info_middleware(func):
         user_info = request.headers.get("X-Userinfo")
         if user_info:
             user_info = json.loads(base64.b64decode(user_info))
-            current_app.logger.info(f"User info provided : {user_info}")
             g.user_info = user_info
         else:
             current_app.logger.info("No user info provided...")

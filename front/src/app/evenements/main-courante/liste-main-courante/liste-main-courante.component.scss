@@ -1,21 +1,39 @@
 @import "../../../../../design-system/styles/variables";
+@import "../../../../../design-system/styles/mixins";
 
+:host {
+  @include mediaquery(desktop) {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+  }
+}
 .action--export {
   position: absolute;
   top: 0;
   right: 16px;
 }
 .mc {
-  &.prototype .action {
-    margin-top: -70px;
-    margin-left: 306px;
-    &--filter {
-      margin-left: 240px;
+  @include mediaquery(desktop) {
+    height: calc(100vh - #{$headerSize * 2});
+    overflow-y: scroll;
+  }
+  &--colright {
+    @include mediaquery(desktop) {
+      overflow: scroll;
     }
   }
-  // margin-bottom: 104px;
-  &--content {
-    height: 340px;
+  .filter-pastille {
+    display: none;
+    background: $red;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    &.-active {
+      display: block;
+    }
   }
 
   &--empty {
@@ -26,7 +44,8 @@
     }
   }
   .list {
-    padding-bottom: 120px;
+    padding-bottom: 75px;
+    background: $white;
     &--element {
       border: 0;
       cursor: pointer;

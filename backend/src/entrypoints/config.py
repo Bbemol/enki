@@ -45,11 +45,18 @@ class EnkiConfig(object):
     MINIO_PORT = os.environ.get("MINIO_PORT", "9000")
     MINIO_URI = os.environ.get("MINIO_URI", f"{MINIO_ENDPOINT}:{MINIO_PORT}")
     
-    MINIO_MESSAGE_RESOURCES_BUCKET = os.environ.get("MINIO_MESSAGE_RESOURCES_BUCKET", "messages")
+    MINIO_MESSAGE_RESOURCES_BUCKET = os.environ.get("MINIO_MESSAGE_RESOURCES_BUCKET", "messages-test")
     MINIO_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY", "MINIOACCESSKEY")
     MINIO_SECRET_KEY = os.environ.get("MINIO_SECRET_KEY", "MINIO_SECRET_KEY")
+    MINIO_REGION = os.environ.get("MINIO_REGION", "fr-par")
+    MINIO_SECURE = os.environ.get("MINIO_SECURE", "false") == "true"
 
     KEYCLOAK_BASE_URL = os.environ.get("KEYCLOAK_BASE_URL")
     KEYCLOAK_REALM = os.environ.get("KEYCLOAK_REALM")
     KEYCLOAK_USERNAME = os.environ.get("KEYCLOAK_USERNAME")
     KEYCLOAK_PASSWORD = os.environ.get("KEYCLOAK_PASSWORD")
+
+    EMAIL_HOST = os.environ.get("EMAIL_HOST")
+    EMAIL_PORT = os.environ.get("EMAIL_PORT")
+    EMAIL_USER = os.environ.get("EMAIL_USER")
+    EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")

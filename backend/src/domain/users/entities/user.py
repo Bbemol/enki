@@ -27,6 +27,7 @@ class UserEntity(DataClassJsonMixin, Entity):
     """
     first_name: str
     last_name: str
+    email: str
     position_id: Optional[str] = field(default_factory=lambda: None)
     group_id: Optional[str] = field(default_factory=lambda: None)
     group_type: GroupType = field(default_factory=lambda: None)

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  keycloak-provision:
+    build:
+      context: ./authentication/docker
+      dockerfile: Dockerfile.provision
+    env_file:
+      - .envs/.local/.env.auth
+    networks:
+      - default
+      - enki_default
+  kong-provision:
+    build:
+      context: ./gateway/docker
+      dockerfile: Dockerfile.provision
+    env_file:
+      - .envs/.local/.env.kong
+    #volumes:
+    #  - ./gateway/docker/scripts:/scripts
+    networks:
+      - default
+      - enki_default
+
+networks:
+  default:
+    driver: bridge
+  enki_default:
+    external: true

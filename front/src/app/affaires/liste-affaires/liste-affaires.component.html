@@ -1,0 +1,31 @@
+<div class="title-container -bottomLine">
+  <h1 class="h1-title">Affaires</h1>
+  <div class="subtitle">
+    Mise à jour il y a 2 minutes
+  </div>
+</div>
+<div class="affaires">
+  <ul class="list">
+    <li class="list--element" *ngFor="let affaire of affaires">
+      <a class="list--wrapper" routerLink="/detail-affaire/{{affaire.uuid}}">
+        <div class="secondInfos">
+          <div class="secondInfos--dateTime">
+            {{affaire.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
+          </div>
+          <div class="badge badge__inverted" *ngIf="affaire.evenement">{{affaire.evenement.title}}</div>
+        </div>
+        <div class="mainInfos -hasIcon">
+          <div class="mainInfos--title">
+            {{affaire.natureDeFait}}
+          </div>
+          <!-- <div class="mainInfos--icon">
+            <img src="assets/natureDeFaits/Incendies.png" alt="">
+          </div> -->
+        </div>
+      </a>
+    </li>
+  </ul>
+  <div class="affaires--empty" *ngIf="affaires.length === 0">
+    Pas d'appels pour le moment...
+  </div>
+</div>

@@ -10,12 +10,13 @@ from domain.core.entity import Entity
 
 
 class GroupType(str, Enum):
-    MAIRIE = "mairie"
-    PREFECTURE = "prefecture"
-    PARTENAIRE = "partenaire"
-    SDIS = "SDIS"
-    COZ = "COZ"
-    COGIC = "COGIC"
+    MAIRIE = "Mairie"
+    PREFECTURE = "Préfecture"
+    EPCI = "EPCI"
+    PARTENAIRE = "Partenaire"
+    SDIS = "Sdis"
+    COZ = "Coz"
+    COGIC = "Cogic"
 
 
 class LocationType(str, Enum):

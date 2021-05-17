@@ -1,6 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Contact } from 'src/app/interfaces/Contact';
+import { ActivatedRoute } from '@angular/router';
+import { HistoryUrlService } from 'src/app/history-url.service';
+import { Contact } from 'src/app/interfaces';
 import { UserService } from 'src/app/user/user.service';
 import { AnnuaireService } from '../annuaire.service';
 
@@ -13,12 +15,16 @@ export class ContactDetailComponent implements OnInit {
 
   contactUUID;
   contact;
+  goBackLinkLabel: string;
 
   constructor(
     private route: ActivatedRoute,
     private annuaireService: AnnuaireService,
-    public userService: UserService
+    public userService: UserService,
+    private historyUrl: HistoryUrlService,
+    private _location: Location,
   ) {
+    this.goBackLinkLabel = this.historyUrl.getPreviousLabel()
     this.contact = {
       uuid: '',
       first_name: '',
@@ -55,6 +61,10 @@ export class ContactDetailComponent implements OnInit {
     } else {
       this.userService.addContactToUserFavs(contact.uuid).subscribe();
     }
+  }
+
+  goBack(): void {
+    this._location.back()
   }
 
 }

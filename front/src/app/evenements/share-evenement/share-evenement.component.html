@@ -1,4 +1,5 @@
-<div class="share--content" [class]="mobilePrototype.getCheckedClass()">
+<app-small-heading *ngIf="isPanel" title="Ajouter des participants" (closeEvent)="closePanel()"></app-small-heading>
+<div class="share--content">
   <div class="title-container">
     <h1 class="h2-title">Partager l'événement</h1>
   </div>
@@ -7,52 +8,10 @@
       Vous pouvez ajouter des particpants depuis l’annuaire ENKI.
     </p>
     <div class="enkiform__group">
-      <!-- <input type="text" class="enkiform__input" id="participants"  [formControl]="participants" required> -->
-      <button class="btn test--shareWithUser" (click)="goToSearchUser()">Ajouter des participants</button>
+      <input type="text" class="enkiform__input" id="participants" placeholder="Rechercher un utilisateur Enki" required>
+      <!-- <button class="btn test--shareWithUser" (click)="goToSearchUser()">Ajouter des participants</button> -->
       <!-- <svg class="icon-search icon"><use xlink:href="#icon-search"></use></svg> -->
     </div>
   </div>
-  <div class="participants" *ngIf="(participants | async).length">
-    <h2 class="participants--title title-with-icon">
-      <svg class="icon-user icon"><use xlink:href="#icon-user"></use></svg>
-      {{participants.length}} PARTICIPANTS
-    </h2>
-    <div class="participants--user" *ngFor="let participant of participants | async">
-      <div class="list-participants--primaryInfos">
-        {{participant.user.position.group.label}} - {{participant.user.position.position.label}}
-      </div>
-      <div class="participants--secondaryInfos">
-        {{participant.user.last_name}} {{participant.user.first_name}}
-      </div>
-      <div class="participants--role test--changeParticipantRole" (click)="showEditParticipantRights(participant)">
-        {{mapUserRoleToLabel(participant.type)}}
-        <svg class="icon-chevron icon"><use xlink:href="#icon-chevron"></use></svg>
-      </div>
-    </div>
-  </div>
+  <app-participants [participants]="participants" [selectedParticipant]="selectedParticipant"></app-participants>
 </div>
-<div class="action action--video" (click)="createMeeting()">
-  <svg class="icon-video icon"><use xlink:href="#icon-video"></use></svg>
-</div>
-<app-modal (closed)="removeSelectedParticipant($event)">
-  <!-- {{selectedParticipant | json}} -->
-  <div *ngIf="selectedParticipant">
-    <div class="participants--infos">
-      <div class="participants--primaryInfos">
-        {{selectedParticipant.user.position.group.label}} - {{selectedParticipant.user.position.position.label}}
-      </div>
-      <div class="participants--secondaryInfos">
-        {{selectedParticipant.user.last_name}} {{selectedParticipant.user.first_name}}
-      </div>
-    </div>
-    <div class="participants--roles">
-      <form [formGroup]="roleGroup">
-        <div class="enkiform__group radio-roles" *ngFor="let role of roles | keyvalue">
-          <input type="radio" class="enkiform__radio" formControlName="role" id="{{role.key}}" value="{{role.key}}" />
-          <label for="{{role.key}}">{{role.value}}</label>
-        </div>
-      </form>
-    </div>
-  </div>
-</app-modal>
-<router-outlet></router-outlet>

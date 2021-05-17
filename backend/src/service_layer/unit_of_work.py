@@ -10,6 +10,7 @@ from sqlalchemy_searchable import make_searchable
 from adapters.postgres import PgMessageRepository, PgTagRepository, PgEvenementRepository
 from adapters.postgres.base_orm import metadata
 from adapters.postgres.pg_contact_repository import PgContactRepository
+from adapters.postgres.pg_echange_repository import PgEchangeRepository
 from adapters.postgres.pg_group_repository import PgGroupRepository
 from adapters.postgres.pg_invitation_repository import PgInvitationRepository
 from adapters.postgres.pg_meeting_repository import PgMeetingRepository
@@ -18,6 +19,7 @@ from adapters.postgres.pg_simple_affair_repository import PgSimpleAffairReposito
 from adapters.postgres.pg_user_repository import PgUserRepository
 from domain.affairs.ports.affair_repository import AbstractAffairRepository, InMemoryAffairRepository
 from domain.affairs.ports.simple_affair_repository import AbstractSimpleAffairRepository
+from domain.echanges.ports.echange_repository import AbstractEchangeRepository
 from domain.evenements.ports import AbstractTagRepository, AbstractMessageRepository, AbstractResourceRepository
 from domain.evenements.ports.evenement_repository import AbstractEvenementRepository, InMemoryEvenementRepository
 from domain.evenements.ports.message_repository import InMemoryMessageRepository
@@ -42,6 +44,7 @@ class AbstractUnitOfWork(abc.ABC):
     group: AbstractGroupRepository
     invitation: AbstractInvitationRepository
     meeting: AbstractMeetingRepository
+    echange: AbstractEchangeRepository
 
     def __init__(self, config):
         self.config = config
@@ -71,7 +74,8 @@ def build_engine(sql_engine_uri: str) -> Engine:
     isolation_level = "READ UNCOMMITTED" if "sqlite" in sql_engine_uri else "REPEATABLE READ"
     engine = create_engine(
         sql_engine_uri,
-        isolation_level=isolation_level,
+        # isolation_level=isolation_level,
+        pool_pre_ping=True
     )
     return engine
 
@@ -105,6 +109,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
         self.group = PgGroupRepository(self.session)
         self.invitation = PgInvitationRepository(self.session)
         self.meeting = PgMeetingRepository(self.session)
+        self.echange = PgEchangeRepository(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):

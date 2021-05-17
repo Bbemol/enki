@@ -1,7 +1,6 @@
 @import "../../../../design-system/styles/variables";
 
 .dashboard {
-  padding: 16px 0;
   &--widget {
     padding: 24px 16px;
   }
@@ -9,11 +8,14 @@
 .evenements {
   color: $white;
 }
-.interventions {
+.affaires {
   background: #E5EDF5;
 }
 .meteo {
   background: $white;
+  iframe {
+    width: 100%;
+  }
 }
 img {
   max-width: 100%;
@@ -43,7 +45,7 @@ img {
   font-size: 17px;
   padding: 0 16px 8px 0;
 }
-.interventions--seeMore {
+.affaires--seeMore {
   margin: 20px 0 0;
   font-size: 17px;
   line-height: 24px;

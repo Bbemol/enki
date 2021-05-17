@@ -1,13 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessagesService } from '../messages.service';
 import { LabelsService } from '../labels.service';
 import { EvenementsService } from '../../evenements.service';
+import { ModalComponent } from 'src/app/ui/modal/modal.component';
+import { Observable, Subject } from 'rxjs';
+
+const TITLE_MAX_LENGTH = 150;
+const TITLE_MIN_LENGTH = 2;
 
 interface Media {
   uuid: string;
   url: string;
+}
+
+enum MessageType {
+  PUBLIC = 'public',
+  RESTRICTED = 'restricted'
 }
 @Component({
   selector: 'app-add-message',
@@ -16,12 +26,24 @@ interface Media {
 })
 export class AddMessageComponent implements OnInit {
   messageGroup = new FormGroup({
-    title: new FormControl('', Validators.required),
-    content: new FormControl('', Validators.required),
-    files: new FormControl('', Validators.required)
+    title: new FormControl('', [
+      Validators.required,
+      Validators.minLength(TITLE_MIN_LENGTH),
+      Validators.maxLength(TITLE_MAX_LENGTH),
+    ]),
+    content: new FormControl(''),
+    files: new FormControl('')
   })
+  messageType = MessageType;
   evenementUUID: string;
   listOfMedias: Array<Media>;
+  formSubmitted: boolean;
+  charactersTitleLimit: number;
+  textareaLength: number;
+  public confirmButton = new Subject<boolean>();
+  public confirmBtn$ = this.confirmButton.asObservable();
+  @ViewChild('confirmation') modal: ModalComponent;
+  @ViewChild('cancel') modalCancel: ModalComponent;
   constructor(
     private messagesService: MessagesService,
     public labelsService: LabelsService,
@@ -29,11 +51,21 @@ export class AddMessageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.listOfMedias = []
+    this.listOfMedias = [];
+    this.formSubmitted = false;
+    this.charactersTitleLimit = TITLE_MAX_LENGTH;
+    this.textareaLength = 0;
+    this.messageGroup.controls.title.valueChanges.subscribe((value: string) => {
+      this.textareaLength = value.length;
+    })
   }
-  
 
-  onSubmit(): void {
+  get title() { return this.messageGroup.get('title'); }
+
+  close(): void {
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
+  onSubmit(messageType: MessageType): void {
     let selectedLabelsUUID = this.labelsService.selectedLabels.map(label => label.uuid)
     this.evenementUUID = this.evenementsService.selectedEvenementUUID.getValue()
     this.messagesService.httpSubmitMessage(
@@ -41,11 +73,20 @@ export class AddMessageComponent implements OnInit {
         this.messageGroup.value.content,
         selectedLabelsUUID,
         this.evenementUUID,
-        this.listOfMedias.map(media => media.uuid)
+        this.listOfMedias.map(media => media.uuid),
+        messageType === MessageType.RESTRICTED ? true : false
       ).subscribe(() => {
+        this.formSubmitted = true;
         this.router.navigate([`..`], { relativeTo: this.route })
       }
     )
+  }
+
+  openConfirmationModal(): void {
+    this.modal.open()
+  }
+  closeCancelModal(): void {
+    this.modalCancel.close()
   }
 
   uploadFile(event: any): void {
@@ -69,6 +110,17 @@ export class AddMessageComponent implements OnInit {
         this.listOfMedias = this.listOfMedias.filter(media => media.uuid !== mediaUUID)
       }
     })
+  }
+
+  canDeactivate(): Observable<any> | boolean {
+    if (this.formSubmitted) return true;
+    for (const property in this.messageGroup.value ) {
+      if (this.messageGroup.value[property] !== '') {
+        this.modalCancel.open()
+        return this.confirmBtn$;
+      }
+    }
+    return true;
   }
 
   ngOnDestroy(): void {

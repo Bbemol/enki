@@ -78,6 +78,7 @@ class ResourceResource(WithResourceRepoResource):
         404:
             description: Resource not found
     """
+    method_decorators = [user_info_middleware]
 
     def get(self, uuid: str):
         return {
@@ -86,7 +87,8 @@ class ResourceResource(WithResourceRepoResource):
                }, 200
 
     def delete(self, uuid: str):
-        ResourceService.delete_resource(uuid=uuid, uow=current_app.context),
+        user_uuid = g.user_info["id"]
+        ResourceService.delete_resource(uuid=uuid, user_uuid=user_uuid, uow=current_app.context),
         return {
                    "message": "success"
                }, 200

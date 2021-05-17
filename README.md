@@ -86,7 +86,7 @@ http://localhost:5000/api/enki/v1/affairs
 ```
 You can generate affairs running
 ```
-docker exec backend_enki-api_1 flask create-affairs --number=10 --dept_code=77
+docker exec backend_enki-api_1 flask create-affairs --number=10 --dept_code=77 --event_type=incendie
 ```
 
 # FrontEnd

@@ -1,4 +1,4 @@
-<app-small-heading title="Créer un événement" backLink="/evenements"></app-small-heading>
+<app-small-heading title="Créer un événement" (closeEvent)="close()"></app-small-heading>
 <div class="title-container">
   <h1 class="h2-title">Nouvel événement</h1>
 </div>
@@ -16,11 +16,10 @@
     <label for="location" class="enkiform__label">Localisation</label>
   </div>
   <div class="enkiform__group">
-    <select class="enkiform__input" id="eventType" formControlName="eventType" required>
+    <select class="enkiform__input enkiform__select" id="eventType" formControlName="eventType" required>
       <option *ngFor="let eventType of EvenementTypeEnum | keyvalue" [value]="eventType.value">{{eventType.value}}</option>
     </select>
-<!--     <input type="text" class="enkiform__input" id="eventType" formControlName="eventType" required>
- -->    <label for="eventType" class="enkiform__label">Type d'événement</label>
+    <label for="eventType" class="enkiform__label">Type d'événement</label>
     <svg class="icon-chevron icon"><use xlink:href="#icon-chevron"></use></svg>
   </div>
   <div class="enkiform__group">
@@ -31,10 +30,6 @@
     <input type="checkbox" class="enkiform__checkbox" id="startNow" formControlName="startNow" required>
     <label for="startNow" class="enkiform__label">Démarrer l'événement maintenant</label>
   </div>
-<!--   <div class="enkiform__group">
-    <input type="datetime-local" placeholder="Format : 31/12/2021" class="enkiform__input" id="endDate" formControlName="endDate" required pattern="\d{2}-\d{2}-\d{4}">
-    <label for="endDate" class="enkiform__label">Date de fin</label>
-  </div> -->
   <input type="submit" class="btn" value="Valider">
 </form>
 <router-outlet></router-outlet>

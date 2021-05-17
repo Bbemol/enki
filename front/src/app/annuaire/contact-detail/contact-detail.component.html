@@ -1,7 +1,7 @@
 <div class="contact-detail">
-  <a class="goTo" routerLink="/annuaire/contactlist">
+  <a class="goTo" (click)="goBack()">
     <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
-    Retour à la liste
+    {{goBackLinkLabel}}
   </a>
   <div class="contact-detail--heading title-container -reversed">
     <h1 class="contact-detail--title h2-title">

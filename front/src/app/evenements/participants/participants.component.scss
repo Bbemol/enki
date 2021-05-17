@@ -1,0 +1,46 @@
+@import '../../../../design-system/styles/variables';
+
+.participants {
+  padding: 16px;
+  background: $blueGrey;
+  &--title {
+    svg {
+      fill: $primary;
+    }
+  }
+  &--user {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $lightGrey;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+  &--infos {
+    padding-bottom: 16px;
+    border-bottom: 1px solid $lightGrey;
+    margin-bottom: 16px;
+  }
+  &--role {
+    display: flex;
+    color: $primary;
+    margin-top: 4px;
+    line-height: 25px;
+    cursor: pointer;
+    svg {
+      fill: $primary;
+    }
+
+  }
+  &--primaryInfos {
+    color: $darkestPrimary;
+    line-height: 25px;
+  }
+  &--secondaryInfos {
+    color: $darkestGrey;
+    font-family: $secondaryFont;
+    font-size: 16px;
+    line-height: 25px;
+  }
+
+}

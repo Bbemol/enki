@@ -4,10 +4,10 @@
 
 export const environment = {
   prototype: false,
+  auth: true,
   production: false,
-  backendUrl: `http://localhost:8000/enki/v1`,
+  backendUrl: `http://localhost:8000/api/enki/v1`,
   keycloakUrl: `http://keycloak:8080/auth/`,
-  HTTPClientInMemory: false
 };
 
 /*

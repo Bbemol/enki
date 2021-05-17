@@ -20,8 +20,10 @@
     <button class="btn -white" id="hideOnboarding" (click)="hideOnboarding()">J'ai compris.</button>
   </div>
   <main>
-  
-    <router-outlet></router-outlet>
-  
+    <app-menu></app-menu>
+    <div class="main-content">
+      <router-outlet (activate)="onActivate()"></router-outlet>
+    </div>
   </main>
+  <app-toast-container></app-toast-container>
 </div>

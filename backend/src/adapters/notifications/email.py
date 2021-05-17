@@ -9,7 +9,6 @@ from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('%s/templates/' % os.path.dirname(__file__)))
 
 def send(*args):
-    current_app.logger.info(f'SENDING EMAIL: {args}', )
     to_email, intervention_id, what_happens_label = args
     from_email = current_app.config["FROM_EMAIL"]
 

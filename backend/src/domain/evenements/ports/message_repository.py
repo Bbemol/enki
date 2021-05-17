@@ -56,7 +56,7 @@ class AbstractMessageRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_messages_by_query(self,  evenement_id: str, tag_ids: List[str]) -> MessagesList:
+    def get_messages_by_query(self,  evenement_id: str,restricted_group_id: str,  tag_ids: List[str]) -> MessagesList:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -99,7 +99,7 @@ class InMemoryMessageRepository(AbstractMessageRepository):
         matches = [message for message in self._messages if message.uuid in uuids]
         return matches
 
-    def get_messages_by_query(self, evenement_id: str, tag_ids: List[str]) -> MessagesList:
+    def get_messages_by_query(self, evenement_id: str, restricted_group_id: str, tag_ids: List[str]) -> MessagesList:
         matches = [message for message in self._messages if message.evenement_id in evenement_id]
         matches = [message for message in matches if set([tag.uuid for tag in message.tags]).union(tag_ids)]
         return matches

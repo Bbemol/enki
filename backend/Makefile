@@ -20,8 +20,8 @@ restart:
 	make down && make upd && sleep 8 && make seed
 
 seed:
-	docker exec backend_enki-api_1 flask create-position-groups
-	docker exec backend_enki-api_1 flask create-groups-and-locations
+	docker exec enki_api_1 flask create-position-groups
+	docker exec enki_api_1 flask create-position-groups
 
 shell:
 	docker-compose exec enki-api flask shell
@@ -44,9 +44,9 @@ test-resource-down:
 
 # Migrations
 create-migration:
-	docker-compose -f docker-compose.yml exec enki-api alembic revision --autogenerate -m "test"
+	docker exec enki_api_1 alembic revision --autogenerate -m "test"
 run-migration:
-	docker-compose -f docker-compose.yml exec enki-api alembic upgrade head
+	docker exec enki_api_1 alembic upgrade head
 stamp-migration:
-	docker-compose -f docker-compose.yml exec enki-api alembic stamp head
+	docker exec enki_api_1 alembic stamp head
 

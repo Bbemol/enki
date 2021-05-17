@@ -3,13 +3,15 @@
     <a class="fullscreen-form--cancel" (click)="goBack()">
       <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
     </a>
-    <div class="addLabel--selectedLabels" *ngIf="labelsService.selectedLabels.length > 0">
-      <div class="selectedLabels--item badge badge__inverted" *ngFor="let label of labelsService.selectedLabels">
-        {{ label.title }}
-        <svg class="icon-close icon" (click)="unselectLabel(label)"><use xlink:href="#icon-close"></use></svg>
+    <div class="addLabel--searchAndSelected">
+      <div class="addLabel--selectedLabels" *ngIf="labelsService.selectedLabels.length > 0">
+        <div class="selectedLabels--item badge badge__inverted" *ngFor="let label of labelsService.selectedLabels">
+          <div>{{ label.title }}</div>
+          <svg class="icon-close icon" (click)="unselectLabel(label)"><use xlink:href="#icon-close"></use></svg>
+        </div>
       </div>
+      <input type="text" appFocusFormInput class="fullscreen-form--searchInput" [formControl]="labelSearch" placeholder="Ajouter un label">
     </div>
-    <input type="text" class="fullscreen-form--searchInput" [formControl]="labelSearch" placeholder="Ajouter un label">
   </div>
   <div class="addLabel--searchResults fullscreen-for--searchResults">
     <div class="searchResults--title">

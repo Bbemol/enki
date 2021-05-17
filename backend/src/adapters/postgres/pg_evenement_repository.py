@@ -2,6 +2,7 @@ from typing import List, Union
 
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, lazyload, subqueryload, contains_eager
+from domain.evenements.entities.evenement_type import EvenementType
 
 from domain.evenements.entities.evenement_entity import EvenementEntity, UserEvenementRole
 from domain.evenements.ports.evenement_repository import AbstractEvenementRepository, AlreadyExistingEvenementUuid

@@ -1,31 +1,20 @@
 <header class="header">
-  <div class="header--col header--link" routerLink="/" id="test--dashboardlink">
-    <div class="logo-marianne">
-      <img src="../assets/Marianne.jpg" />
-    </div>
-    <div class="enki-logo">ENKI</div>
-    <div class="badge" *ngIf="userService.user.attributes.fonction !== ''" [class]="userService.user.attributes.fonction === 'prefet' ? 'badge__blueFill' : 'badge__greenFill'">
-      <span *ngIf="userService.user.attributes.fonction === 'prefet'">Préfecture</span>
-      <span *ngIf="userService.user.attributes.fonction === 'maire'">Mairie</span>
+  <div class="header--col header--link">
+    <button class="hamburger hamburger--squeeze" type="button" (click)="openCloseMenu()" [class.is-active]="menuActive">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+  </div>
+  <div class="header--col" routerLink="/" id="test--dashboardlink" (click)="closeMenu()">
+    <div class="enki-logo">
+      <svg class="icon-logo"><use xlink:href="#icon-logo"></use></svg>
+      ENKI
     </div>
   </div>
   <div class="header--col -right">
-    <div class="burger" (click)="openCloseMenu()">
-      <svg class="icon-burger-menu"><use xlink:href="#icon-burger-menu"></use></svg>
+    <div class="notification">
+      <svg class="icon-notification"><use xlink:href="#icon-notification"></use></svg>
     </div>
   </div>
 </header>
-<div class="menu-container">
-  <div class="right-menu" [ngClass]="{ '-active': !menuActive }" [class]="mobilePrototype.getCheckedClass()">
-    <nav>
-      <li class="right-menu--item"><a routerLink="/dashboard" id="test--link-dashboard" (click)="openCloseMenu()">Dashboard</a></li>
-      <li class="right-menu--item"><a routerLink="/interventions" id="test--link-interventions" (click)="openCloseMenu()">Appels de secours</a></li>
-      <li class="right-menu--item"><a routerLink="/evenements" id="test--link-evenements" (click)="openCloseMenu()">Événements</a></li>
-      <li class="right-menu--item"><a routerLink="/annuaire" id="test--link-annuaire" (click)="openCloseMenu()">Annuaire</a></li>
-      <li class="right-menu--item"><a routerLink="/account" id="test--link-account" (click)="openCloseMenu()">Mon compte</a></li>
-      <li class="right-menu--item"><a (click)="logout()">Se déconnecter</a></li>
-    </nav>
-    <app-mobile-prototype></app-mobile-prototype>
-  </div>
-</div>
-<!-- <div class="overlay" [class.-active]="menuActive"></div> -->

@@ -1,22 +1,12 @@
 
 <div class="evenement-container">
-<!--   <a class="goTo" routerLink="/evenements">
-    <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
-    Retour à la liste des événements
-  </a> -->
-  <router-outlet></router-outlet>
-</div>
-<div class="tabbar" [class]="mobilePrototype.getCheckedClass()">
-  <a routerLink="./summary" class="tab" routerLinkActive="-active">
-    <svg class="icon-note icon"><use xlink:href="#icon-note"></use></svg>
-    <span class="tab--label">Résumé</span>
-  </a>
-  <a routerLink="./maincourante" id="test--maincourante" class="tab" routerLinkActive="-active">
-    <svg class="icon-dossier icon"><use xlink:href="#icon-dossier"></use></svg>
-    <span class="tab--label">Main courante</span>
-  </a>
-  <a routerLink="./share" id="test--share" class="tab" routerLinkActive="-active">
-    <svg class="icon-add-contact icon"><use xlink:href="#icon-add-contact"></use></svg>
-    <span class="tab--label">Partager</span>
-  </a>
+  <div class="evenement--header">
+    <a class="goTo" (click)=goBack()>
+      <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
+      Retour à la liste des événements
+    </a>
+    <app-tabbar></app-tabbar>
+  </div>
+  <router-outlet (activate)="onActivate()"></router-outlet>
+  <app-share-evenement [isPanel]="true" [class.-active]="isPanelOpened" class="u-hidden-mobile"></app-share-evenement>
 </div>

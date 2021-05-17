@@ -5,6 +5,7 @@ import { SearchEtablissementService } from './search-etablissement.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { DirectivesModule } from '../directives.module';
+import { PipesModule } from '../pipes.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
   imports: [
     ReactiveFormsModule,
     DirectivesModule,
+    PipesModule,
     CommonModule,
     RouterModule.forChild(routes)
   ]

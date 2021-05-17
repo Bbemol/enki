@@ -5,16 +5,38 @@
   &--selectedLabels {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    padding: 12px 0 0;
+  }
+  &--searchAndSelected {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .fullscreen-form--cancel {
+    align-items: flex-start;
+  }
+  .fullscreen-form--heading {
+    height: auto;
+  }
+  .fullscreen-form--searchInput {
+    flex-shrink: 2;
+    flex-grow: 2;
+    width: auto;
+    height: auto;
   }
 }
 .selectedLabels {
   &--item {
     display: flex;
     align-items: center;
+    margin: 0 8px 8px 0;
+    white-space: nowrap;
     svg {
       font-size: 12px;
       fill: $primary;
       margin: 0 4px 0 8px;
+      cursor: pointer;
     }
   }
 }

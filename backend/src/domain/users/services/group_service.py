@@ -30,7 +30,6 @@ class GroupService:
 
     @staticmethod
     def list_groups_from_type_and_query(group_type: GroupType, query: str, uow: AbstractUnitOfWork):
-        current_app.logger.info(f"query {query} group_type {group_type}")
         with uow:
             groups: List[GroupEntity] = uow.group.get_from_group_type_and_query(group_type=group_type, query=query)
             return GroupService.schema(many=True).dump(groups)

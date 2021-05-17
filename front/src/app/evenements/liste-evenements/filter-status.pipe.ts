@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Evenement, EvenementStatus } from '../evenements.service';
+import { Evenement, EvenementStatus } from 'src/app/interfaces';
 
 @Pipe({
   name: 'filterStatus'

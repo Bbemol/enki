@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Message } from 'src/app/interfaces';
 import { EvenementsService } from '../../evenements.service';
-import { MessagesService } from '../messages.service';
 
 @Component({
   selector: 'app-filter-messages',
@@ -16,13 +16,14 @@ export class FilterMessagesComponent implements OnInit {
     auteur: new FormControl(''),
     type: new FormControl(''),
   })
+  @Input() messages: Message[];
+  @Output() closeFilterEvent = new EventEmitter();
   evenementUUID: string;
   etablissementOptions: any[];
   auteursOptions: any[];
   messageTypeOptions: any[];
   constructor(
     private evenementsService: EvenementsService,
-    private messagesService: MessagesService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -30,25 +31,33 @@ export class FilterMessagesComponent implements OnInit {
     this.etablissementOptions = [];
     this.auteursOptions = [];
     this.messageTypeOptions = [];
-    this.evenementsService.getEvenementByID(this.evenementUUID).subscribe(evenement => {
-      this.filterGroup.controls.etablissement.setValue(evenement.filter.etablissement)
-      this.filterGroup.controls.auteur.setValue(evenement.filter.auteur)
-      this.filterGroup.controls.type.setValue(evenement.filter.type)
-    })
-    this.messagesService.getMessagesByEvenementID(this.evenementUUID).subscribe(messages => {
-      messages.forEach(message => {
-        if (!this.etablissementOptions.some(item => item.group_id === message.creator.position.group_id)) {
-          this.etablissementOptions.push({
-            group_id: message.creator.position.group_id,
-            group_label: message.creator.position.group.label
-          })
-        }
+    const event = this.evenementsService.getEvenementByID(this.evenementUUID)
+    this.filterGroup.controls.etablissement.setValue(event.filter.etablissement)
+    this.filterGroup.controls.auteur.setValue(event.filter.auteur)
+    this.filterGroup.controls.type.setValue(event.filter.type)
+  }
 
-        if(!this.auteursOptions.some(item => item.auteur_id === message.creator.uuid)) {
-          this.auteursOptions.push({
-            auteur_id: message.creator.uuid,
-            auteur_label: `${message.creator.first_name} ${message.creator.last_name}`
-          })
+  closeFilters(): void {
+    this.closeFilterEvent.emit();
+  }
+
+  ngOnChanges() {
+    if(this.messages) {
+      this.messages.forEach(message => {
+        if (message.creator) {
+          if (!this.etablissementOptions.some(item => item.group_id === message.creator.position.group_id)) {
+            this.etablissementOptions.push({
+              group_id: message.creator.position.group_id,
+              group_label: message.creator.position.group.label
+            })
+          }
+  
+          if(!this.auteursOptions.some(item => item.auteur_id === message.creator.uuid)) {
+            this.auteursOptions.push({
+              auteur_id: message.creator.uuid,
+              auteur_label: `${message.creator.first_name} ${message.creator.last_name}`
+            })
+          }
         }
 
         if(!this.messageTypeOptions.some(item => item.type_id === message.type)) {
@@ -58,8 +67,7 @@ export class FilterMessagesComponent implements OnInit {
           })
         }
       })
-      
-    })
+    }
   }
 
   ngOnInit(): void {
@@ -67,12 +75,20 @@ export class FilterMessagesComponent implements OnInit {
 
   onSubmit(): void {
     this.evenementsService.updateEvenementFilter(this.evenementUUID, this.filterGroup.getRawValue()).subscribe(() => {
-      this.router.navigate(['../liste'], { relativeTo: this.route})
+      this.closeFilters();
     })
   }
 
   resetFilters(): void {
-    this.filterGroup.reset();
+    this.evenementsService.updateEvenementFilter(this.evenementUUID, {
+      etablissement: '',
+      auteur: '',
+      type: '',
+      fromDatetime: '',
+      toDatetime: '',
+    }).subscribe(() => {
+      this.closeFilters();
+    })
   }
 
 }

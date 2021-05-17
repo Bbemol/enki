@@ -1,10 +1,12 @@
 from datetime import datetime
 from tempfile import NamedTemporaryFile
 import pandas as pd
-from flask import current_app, send_file
+from flask import current_app, send_file, g
 from flask_restful import Resource, reqparse
 
+from domain.evenements.entities.evenement_entity import EvenementRoleType
 from domain.evenements.services.evenement_service import EvenementService
+from domain.users.services.authorization_service import AuthorizationService
 from entrypoints.middleware import user_info_middleware
 
 
@@ -37,6 +39,9 @@ class EvenementExportResource(WithEvenementRepoResource):
     method_decorators = [user_info_middleware]
 
     def get(self, uuid: str):
+        AuthorizationService.as_access_to_this_evenement_resource(g.user_info["id"], evenement_id=uuid,
+                                                                  role_type=EvenementRoleType.VIEW ,
+                                                                  uow =current_app.context)
         parser = reqparse.RequestParser()
         parser.add_argument('format', type=str, required=True)
 

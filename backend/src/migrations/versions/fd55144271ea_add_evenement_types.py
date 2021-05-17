@@ -18,10 +18,7 @@ depends_on = None
 
 def upgrade():
     with op.get_context().autocommit_block():
-        op.execute("ALTER TYPE evenementtype ADD VALUE 'INCENDIE'")
-        op.execute("ALTER TYPE evenementtype ADD VALUE 'INONDATION'")
-        op.execute("ALTER TYPE evenementtype ADD VALUE 'ATTENTAT'")
-
+        pass
 
 def downgrade():
     op.execute("ALTER TYPE evenementtype RENAME TO evenementtype_old")

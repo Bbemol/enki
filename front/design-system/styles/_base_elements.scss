@@ -1,7 +1,25 @@
+@import './mixins';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  background: $darkestPrimary;
+  height: 100%;
+}
+
 body {
   font-family: $primaryFont;
   margin: 0;
-  background: $darkestPrimary;
+  min-height: 100vh;
+  background: $white;
+  @include mediaquery(desktop) {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 }
 
 a {

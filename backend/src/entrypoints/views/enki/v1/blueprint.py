@@ -4,6 +4,7 @@ from slugify import slugify
 
 from domain.evenements.schemas.message_tag_schema import MessageSchema
 from domain.evenements.schemas.evenement_schema import EvenementSchema
+from domain.users.schemas.user import UserSchema
 from entrypoints.extensions import api_spec
 from entrypoints.views.enki.v1.resources.users.user_ressources import UserResource, UserListResource
 from .resources import AffairListResource, AffairRandomResource, AffairRandomListResource, \
@@ -22,6 +23,7 @@ from entrypoints.views.enki.v1.resources.users.invitation_ressources import Invi
     ValidateInvitationResource
 from entrypoints.views.enki.v1.resources.evenements.message_resource_resource import MessageMultipleResourceResource
 from .resources.evenements.meeting_ressources import MeetingResource, MeetingListResource, JoinMeetingResource
+from .resources.evenements.message_reactions import MessageListReactions
 from .resources.users.group_ressources import GroupListResource, GroupTypeListResource, \
     PositionGroupTypeListResource
 from .resources.users.location_ressources import LocationListResource, LocationResource
@@ -59,6 +61,7 @@ endpoints = {
     # Evenements <> Messages
     MessageListResource: '/events/<uuid>/messages',
     MessageResource: '/events/<uuid>/messages/<message_uuid>',
+    MessageListReactions: '/events/<uuid>/messages/<message_uuid>/react',
     # Evenement <> Affairs
     AffairEvenementResource: '/events/<uuid>/affairs/<affair_uuid>',
     AffairListEvenementResource: '/events/<uuid>/affairs',
@@ -104,7 +107,7 @@ def register_views():
     # Add documents Schemas
     api_spec.spec.components.schema("EvenementSchema", schema=EvenementSchema)
     api_spec.spec.components.schema("MessageSchema", schema=MessageSchema)
-    api_spec.spec.components.schema("UserSchema", schema=MessageSchema)
+    api_spec.spec.components.schema("UserSchema", schema=UserSchema)
     # api_spec.spec.components.schema("TagSchema", schema=TagSchema)
 
     for resource in endpoints:

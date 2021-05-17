@@ -10,7 +10,6 @@ api = Api(enki_blueprint)
 @enki_blueprint.route('/', methods=["GET"])
 @user_info_middleware
 def hello_enki():
-    current_app.logger.info(request.headers)
     response = make_response(jsonify({
         'message': 'Hello, Enki!',
         "info": g.user_info,

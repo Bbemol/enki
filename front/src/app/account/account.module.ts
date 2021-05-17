@@ -6,6 +6,7 @@ import { AccountComponent } from './account.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchEtablissementComponent } from '../search-etablissement/search-etablissement.component';
 import { UserInfoGuard } from '../guards/user-info.guard';
+import { DirectivesModule } from '../directives.module';
 
 const routes : Routes = [
   {
@@ -39,6 +40,7 @@ const routes : Routes = [
   ],
   imports: [
     CommonModule,
+    DirectivesModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     

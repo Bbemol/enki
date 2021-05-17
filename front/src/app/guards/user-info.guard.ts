@@ -3,7 +3,8 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Acti
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UserService } from '../user/user.service';
-import { REGISTER } from '../constants';
+import { REGISTER } from '../constants/constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class UserInfoGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       // send the first segment of requested route
       const firstSegmentRouterSnapshot = this.router.parseUrl(state.url).root.children[PRIMARY_OUTLET] ? this.router.parseUrl(state.url).root.children[PRIMARY_OUTLET].segments[0].path : ''
-      return this.userIsAuth(firstSegmentRouterSnapshot);
+      return environment.auth ? this.userIsAuth(firstSegmentRouterSnapshot) : true;
   }
 
   userIsAuth(firstSegmentRouterSnapshot): Observable<boolean | UrlTree> {
@@ -29,14 +30,14 @@ export class UserInfoGuard implements CanActivate {
     } else {
       return this.userService.getUserInfo().pipe(
         map(res => {
-          console.log(res)
           if (res.message === 'success') {
-            this.userService.userExist = true
+            this.userService.userExist = true;
             // this.userService.user = res.data
-            this.userService.user.uuid = res.data.uuid
-            this.userService.user.attributes.fonction = res.data.position.position.slug
-            this.userService.user.fullname = `${res.data.first_name} ${res.data.last_name}`
-            this.userService.user.location = res.data.position.group.location.search_label
+            this.userService.user.uuid = res.data.uuid;
+            this.userService.user.attributes.fonction = res.data.position.position.slug;
+            this.userService.user.fullname = `${res.data.first_name} ${res.data.last_name}`;
+            this.userService.user.location = res.data.position.group.location.search_label;
+            this.userService.user.location_id = res.data.position.group.location.external_id;
 
           }
           return this.getUrlTreeFromCurrentSnapshot(firstSegmentRouterSnapshot)

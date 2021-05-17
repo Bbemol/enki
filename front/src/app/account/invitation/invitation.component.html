@@ -11,7 +11,7 @@
   </div>
   <form action="" class="invitationForm" [formGroup]="invitationGroup" (ngSubmit)="onSubmit()">
     <div class="enkiform__group">
-      <select class="enkiform__input" id="group" formControlName="group" required>
+      <select class="enkiform__input enkiform__select" id="group" formControlName="group" required>
         <option *ngFor="let groupType of groupTypes" value="{{groupType}}">{{groupType | titlecase}}</option>
       </select>
       <label for="group" class="enkiform__label">Type d'établissement</label>

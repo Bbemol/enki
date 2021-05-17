@@ -25,11 +25,11 @@
         id="userid-{{ user.uuid }}"
       >
         <div class="searchList--group">
-          {{ user.position.group.label }} - {{ user.position.position.label }}
+          <span [innerHTML]="getUserPositionResult(user, userSearch.value)"></span>
+          <div class="searchList--name">
+            <span [innerHTML]="getUserNameResult(user, userSearch.value)"></span>
+          </div>
         </div>
-<!--         <div class="searchList--name">
-          {{ user.first_name }} {{ user.last_name }}
-        </div> -->
       </a>
     </div>
   </div>

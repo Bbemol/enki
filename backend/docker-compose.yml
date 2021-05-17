@@ -33,16 +33,7 @@ services:
 #      - ./pgdata/dev:/var/lib/postgresql/data
     networks:
       - default
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - "1025:1025"
-      - "8025:8025"
-    networks:
-      - default
-      - enki_default
-
+      -
   minio:
     image: minio/minio
     volumes:

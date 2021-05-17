@@ -1,0 +1,89 @@
+<li class="goTo" (click)="goBack()">
+  <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
+  {{previousLinkLabel}}
+</li>
+
+<div class="affaire" *ngIf="fetchedAffaire">
+  <!-- <div class="info-block niveauAlerte">
+    Niveau d'alerte : 
+    <svg class="icon-notification -active"><use xlink:href="#icon-notification"></use></svg>
+    <svg class="icon-notification"><use xlink:href="#icon-notification"></use></svg>
+    <svg class="icon-notification"><use xlink:href="#icon-notification"></use></svg>
+  </div> -->
+  <div class="info-block infosPrincipales">
+    <!-- <div class="infosPrincipales--icon">
+      <img src="assets/natureDeFaits/Incendies.png" alt="">
+    </div> -->
+    <div>
+      <div class="h2-title infosPrincipales--natureDeFait">
+        {{affaire.natureDeFait}}
+      </div>
+      <div class="infosPrincipales--dateTemps">
+        {{affaire.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
+      </div>
+    </div>
+  </div>
+  <div class="map">
+    <app-map [affaire]="affaire"></app-map>
+  </div>
+  <div class="info-block localisation">
+    <div class="title-with-icon localisation--title">
+      <svg class="icon icon-pin"><use xlink:href="#icon-pin"></use></svg>
+      <div class="">Localisation</div>
+    </div>
+    <div class="localisation--details">
+      <div class="localisation--adresse">
+        {{affaire.address}}
+      </div>
+      <!-- <div class="localisation--type">
+        Circulation / transport, voie rapide
+      </div> -->
+    </div>
+    <button class="btn -auto">Copier l'adresse</button>
+  </div>
+  <div class="info-block circonstances">
+    <div class="title-with-icon circonstances--title">
+      <svg class="icon icon-layers"><use xlink:href="#icon-layers"></use></svg>
+      <div class="">Circonstances</div>
+    </div>
+    <ul>
+      <li>Plusieurs victimes</li>
+      <li>Blessures légères</li>
+    </ul>
+  </div>
+  <div class="info-block evenement">
+    <div class="title-with-icon evenement--title">
+      <svg class="icon icon-alert"><use xlink:href="#icon-alert"></use></svg>
+      <div class="">Événement</div>
+    </div>
+    <div class="evenement--description">
+      Attachez une affaire à un événement pour la lier à la main courante de l’évènement sélectionné.
+    </div>
+    <form action="" class="userInfoForm" [formGroup]="evenementGroup" (ngSubmit)="attachEvenementToAffaire()">
+      <div class="evenement--select" *ngIf="!affaire.evenement_id">
+        <div class="enkiform__group">
+          <select class="enkiform__input enkiform__select" id="evenement" formControlName="evenement">
+            <option value="" disabled>Sélectionner ou créer un événement</option>
+            <option [value]="CREATE_EVENT_VALUE">Créer un nouvel événement</option>
+            <option *ngFor="let evenement of evenementsList" [value]="evenement.uuid">{{evenement.title}}</option>
+          </select>
+          <svg class="icon-chevron icon"><use xlink:href="#icon-chevron"></use></svg>
+        </div>
+      </div>
+      <div class="evenement--button" *ngIf="!affaire.evenement_id">
+        <button type="submit" class="btn -green">Valider</button>
+      </div>
+      <div class="evenement--link" *ngIf="affaire.evenement_id">
+        <button type="button" class="btn btn--special" routerLink='/evenements/{{affaire.evenement_id}}'>
+          {{selectedEvenementTitle}}
+          <svg class="icon-chevron rotated icon"><use xlink:href="#icon-chevron"></use></svg>
+        </button>
+      </div>
+      <div class="evenement--button" *ngIf="affaire.evenement_id">
+        <button type="button" class="btn" (click)="detachEvenementToAffaire()">
+          Retirer de l'événement
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

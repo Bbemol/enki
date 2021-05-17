@@ -12,3 +12,6 @@ down:
 
 logs:
 	docker-compose -f docker-compose.yml logs
+
+build-dist:
+	docker-compose -f docker-compose.prod.yml --rm run front

@@ -1,55 +1,40 @@
 
 @import "../../../../design-system/styles/variables";
+@import "../../../../design-system/styles/mixins";
 
 .evenement {
   &--body {
     padding: 16px;
   }
-}
-.evenement-container {
-  height: 526px;
-}
-.signalements {
-  margin-bottom: 20px;
-  .icon {
-    fill: $primary;
-  }
-}
-.tabbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: $lightestGrey;
-  height: 58px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  &.prototype {
-    bottom: auto;
-    width: 375px;
-    // margin-top: 255px;
-  }
-}
-.tab {
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  font-size: 13px;
-  color: $darkerGrey;
-  svg {
-    fill: $darkerGrey;
-  }
-  &--label {
-    display: block;
-    line-height: 12px;
-  }
-  &.-active {
-    color: $primary;
-    svg {
-      fill: $primary;
+  &--header {
+    display: flex;
+    justify-content: space-between;
+    @include mediaquery(desktop) {
+      position: fixed;
+      top: $headerSize;
+      width: calc(100% - 250px);
+      z-index: 1;
+      background: $white;
     }
   }
 }
+.actions {
+  bottom: 82px;
+  @include mediaquery(desktop) {
+    right: 410px;
+    bottom: 24px;
+  }
+}
+.evenement-container {
+  padding-bottom: 58px;
+  @include mediaquery(desktop) {
+    padding-bottom: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: $headerSize 0;
+  }
+}
+
 .map-container {
   height: 200px;
 }

@@ -1,9 +1,35 @@
 @import "../../../../../design-system/styles/variables";
 @import "../../../../../design-system/styles/mixins";
 
+:host {
+  position: absolute;
+  top: 0;
+  background: $white;
+  width: 100%;
+  padding-top: 72px;
+  @include mediaquery(desktop) {
+    padding-top: 16px;
+    right: 0;
+    width: 400px;
+    z-index: 1;
+    height: 100%;
+    box-shadow: 0px 0px 8px rgb(0 0 0 / 25%);
+  }
+}
 .addMessage {
   padding: 0 16px;
   margin-bottom: 52px;
+  .icon-lock, .icon-unlock {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+}
+.counter {
+  color: $darkerGrey;
+  font-size: 14px;
+  &.-error {
+    color: $red;
+  }
 }
 .addMessageForm {
   padding: 16px 0;
@@ -35,6 +61,28 @@
       }
   }
 }
+.confirmation {
+  &--quote {
+    color: $darkestGrey;
+    font-size: rem-calc(16);
+    line-height: 23px;
+    font-family: $secondaryFont;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+    svg {
+      position: relative;
+      top: 5px;
+    }
+  }
+  &--note {
+    background: $blueGrey;
+    font-size: rem-calc(16);
+    line-height: 23px;
+    padding: 12px 16px;
+    margin: 0 -16px 0 -16px;
+    color: $darkestPrimary;
+  }
+}
 
 .labelGroup {
   padding: 12px 0 16px;
@@ -45,6 +93,9 @@
   &--labelList {
     padding: 8px 0;
   }
+  &--labelElement {
+    margin-right: 8px;
+  }
   &--labelLink {
     display: flex;
     color: $darkGrey;
@@ -53,7 +104,7 @@
     font-size: 17px;
     padding: 8px 0;
     .icon {
-      padding-right: 8px;
+      margin-right: 8px;
       font-size: 18px;
       fill: $darkerGrey;
     }

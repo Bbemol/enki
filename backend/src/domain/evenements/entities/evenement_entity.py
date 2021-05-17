@@ -11,6 +11,7 @@ from domain.core.entity import Entity
 from domain.evenements.entities.message_entity import MessageEntity
 from domain.users.entities.group import LocationEntity
 from domain.users.entities.user import UserEntity
+from domain.evenements.entities.evenement_type import EvenementType
 
 
 class EvenementClosedException(HTTPException):
@@ -28,19 +29,15 @@ class UserHasNoAccessEvenement(HTTPException):
     description = "Cet utilisateur n'à pas accès à cet évenement"
 
 
-class EvenementType(str, Enum):
-    INCENDIE = "incendie"
-    INONDATION = "inondation"
-    ATTENTAT = "attentat"
-
-
 class EvenementRoleType(str, Enum):
+    CREATOR = "creator"
     ADMIN = "admin"
     EDIT = "edit"
     VIEW = "view"
 
 
 evenement_role_dependancies = {
+    EvenementRoleType.CREATOR: [EvenementRoleType.ADMIN, EvenementRoleType.EDIT, EvenementRoleType.VIEW],
     EvenementRoleType.ADMIN: [EvenementRoleType.EDIT, EvenementRoleType.VIEW],
     EvenementRoleType.EDIT: [EvenementRoleType.VIEW],
     EvenementRoleType.VIEW: [],

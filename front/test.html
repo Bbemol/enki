@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test ENKI</title>
+</head>
+<body>
+  <div class="container">
+    <a href="#" class="rf-image">
+      <img class="" src="../assets/Republique_Francaise.png" alt="Marque République Française">
+    </a>
+    <div class="result">
+  
+    </div>
+  </div>
+  <style>
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .result {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+  <script>
+    document.querySelector('.rf-image').addEventListener('click', function(e) {
+      e.preventDefault();
+      fetch('https://enki.nexsis112.fr/api/enki/v1/affairs')
+      .then(response => response.json())
+      .then(data => {
+        document.querySelector('.result').innerHTML = JSON.stringify(data);
+      });
+    })
+  </script>
+</body>
+</html>

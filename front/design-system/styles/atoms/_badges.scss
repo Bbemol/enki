@@ -8,18 +8,39 @@
   text-transform: uppercase;
   font-size: 13px;
   height: 20px;
+  font-family: $secondaryFont;
+  // line-height: 20px;
   // margin-left: 8px;
   letter-spacing: 0.5px;
+  min-width: 0;
+  &__troncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
   &__inverted {
     background: transparent;
     border: 1px solid $primary;
     color: $primary;
+  }
+  &.-red {
+    border-color: $red;
+    background-color: $red;
+  }
+  &__redFill {
+    border-color: $red;
+    background-color: $red;
   }
   &__green {
     border-color: $lightGreen;
     color: $lightGreen;
   }
   &__greenFill {
+    border-color: $lightGreen;
+    background-color: $lightGreen;
+  }
+  &.-green {
     border-color: $lightGreen;
     background-color: $lightGreen;
   }

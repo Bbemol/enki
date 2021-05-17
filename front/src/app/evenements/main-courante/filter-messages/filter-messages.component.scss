@@ -1,10 +1,42 @@
 @import "../../../../../design-system/styles/variables";
+@import "../../../../../design-system/styles/mixins";
 
 .filter-messages {
   padding: 0 16px;
+  @include mediaquery(desktop) {
+    padding: 0;
+  }
+}
+.title-container {
+  @include mediaquery(desktop) {
+    padding: 16px 0;
+  }
+}
+:host {
+  position: absolute;
+  top: 0;
+  background: white;
+  width: 100%;
+  padding-top: 72px;
+  height: 100%;
+  display: none;
+  &.-active {
+    display: block;
+  }
+  @include mediaquery(desktop) {
+    display: block;
+    position: relative;
+    padding-top: 0;
+    width: auto;
+    height: auto;
+    padding: 24px 32px;
+    margin-top: 24px;
+    border: 1px solid $lightGrey;
+  }
 }
 .removeFilters {
   color: $red;
+  cursor: pointer;
   text-align: center;
   font-size: rem-calc(16);
   font-weight: 600;

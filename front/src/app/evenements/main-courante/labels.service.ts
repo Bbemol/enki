@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { ToastType } from 'src/app/interfaces';
+import { ToastService } from 'src/app/toast/toast.service';
 import { environment } from 'src/environments/environment';
 
 export interface Label {
@@ -19,6 +21,7 @@ export class LabelsService {
   httpHeaders: object;
   constructor(
     private http: HttpClient,
+    private toastService: ToastService,
   ) {
     this.labelUrl = `${environment.backendUrl}/tags`
     this.labels = []
@@ -36,7 +39,11 @@ export class LabelsService {
     }
     return this.http.post<any>(this.labelUrl, tag, this.httpHeaders)
       .pipe(
-        map(label => label.data)
+        map(label => label.data),
+        catchError((error) => {
+          this.toastService.addMessage(`Impossible d'ajouter ce label`, ToastType.ERROR);
+          return throwError(error);
+        })
       )
   }
   getLabels(): Observable<Label[]> {
@@ -44,6 +51,10 @@ export class LabelsService {
       .pipe(
         map(labels => {
           return labels.data
+        }),
+        catchError((error) => {
+          this.toastService.addMessage(`Impossible de récupérer la liste des labels`, ToastType.ERROR);
+          return throwError(error);
         })
       )
   }

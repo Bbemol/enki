@@ -20,20 +20,22 @@ class MinioResourceContentRepository:
         return cls(minio_uri=config.MINIO_URI,
                    access_key=config.MINIO_ACCESS_KEY,
                    secret_key=config.MINIO_SECRET_KEY,
+                   region=config.MINIO_REGION,
+                   secure=config.MINIO_SECURE,
                    bucket_list=[
                        config.MINIO_MESSAGE_RESOURCES_BUCKET
                    ])
 
-    def __init__(self, minio_uri: str, access_key: str, secret_key: str, bucket_list: Union[list, None] = None):
+    def __init__(self, minio_uri: str, access_key: str, secret_key: str, region:str, secure:bool, bucket_list: Union[list, None] = None):
         self.bucket_list = bucket_list or []
-        MINIO_SECURE = os.environ.get("MINIO_SECURE", "minio") == "true"
-        try:
-            self.client = Minio(minio_uri,
-                                access_key=access_key,
-                                secret_key=secret_key, secure=MINIO_SECURE)
-            self.initialize()
-        except MaxRetryError:
-            self.client = None
+
+
+        self.client = Minio(minio_uri,
+                            access_key=access_key,
+                            secret_key=secret_key,
+                            region=region,
+                            secure=secure)
+        self.initialize()
 
     def initialize(self):
         for bucket in self.bucket_list:

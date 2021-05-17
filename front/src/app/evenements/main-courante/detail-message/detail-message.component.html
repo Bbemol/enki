@@ -1,12 +1,11 @@
-<a class="goTo" routerLink='../../liste'>
+<a class="goTo" (click)=goBack()>
   <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
-  Retour aux messages
+  Retour à la main courante
 </a>
-
 <div class="detail-message">
   <div class="detail-message--header title-container">
-    <h1 class="h2-title">
-      <span class="-emphasize"></span> {{ message.title }}
+    <h1 class="h3-title">
+      {{ message.title }}
     </h1>
     <div class="subtitle">
       Publié le {{message.created_at | date:"dd/MM/yyyy à HH:mm"}}
@@ -26,5 +25,5 @@
       </div>
     </div>
   </div>
-  
+
 </div>

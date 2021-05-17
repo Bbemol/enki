@@ -1,0 +1,26 @@
+<a class="goTo" (click)="closePanel()" *ngIf="isPanel">
+  <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
+  Fermer
+</a>
+<div class="share--content">
+  <div class="title-container">
+    <h1 class="h2-title">Partager l'événement</h1>
+  </div>
+  <div class="share">
+    <p class="share--description">
+      Vous pouvez ajouter des particpants depuis l’annuaire ENKI.
+    </p>
+    <div class="enkiform__group">
+      <!-- <input type="text" class="enkiform__input" id="participants"  [formControl]="participants" required> -->
+      <button class="btn test--shareWithUser" (click)="goToSearchUser()">Ajouter des participants</button>
+      <!-- <svg class="icon-search icon"><use xlink:href="#icon-search"></use></svg> -->
+    </div>
+  </div>
+  <app-participants [participants]="participants" [selectedParticipant]="selectedParticipant"></app-participants>
+</div>
+<div class="actions u-hidden-desktop">
+  <div class="action actions--element action--video" (click)="createMeeting()">
+    <svg class="icon-video icon"><use xlink:href="#icon-video"></use></svg>
+  </div>
+</div>
+<router-outlet (activate)="onActivate()"></router-outlet>

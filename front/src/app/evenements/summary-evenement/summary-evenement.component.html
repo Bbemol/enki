@@ -1,7 +1,3 @@
-<a class="goTo" routerLink="/evenements">
-  <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
-  Retour à la liste des événements
-</a>
 <div class="evenement">
   <div class="title-container -reversed">
     <div class="evenement--over badge badge__blueFill">
@@ -15,7 +11,7 @@
     </div>
     <div class="evenement--dateTime">
       <div class="evenement--startDateTime">
-        {{evenement.started_at | date:"dd/MM/yyyy à HH:mm":timedifference}}
+        {{evenement.started_at | date:"dd/MM/yyyy à HH:mm":"UTC/GMT+2"}}
       </div>
       <svg class="icon-arrow icon"><use xlink:href="#icon-arrow"></use></svg>
       <div class="evenement--endDateTime">
@@ -41,34 +37,34 @@
       <div class="signalements--list">
         <h2 class="title-with-icon">
           <svg class="icon-signalements icon"><use xlink:href="#icon-signalements"></use></svg>
-          ({{getInterventions().length}}) Appels de secours
+          ({{getAffaires().length}}) Affaires attachées
         </h2>
-        <ul class="interventions list">
-          <li class="list--element" *ngFor="let intervention of interventions | async">
-            <a class="list--wrapper" routerLink="/detail-intervention/{{intervention.uuid}}">
+        <ul class="affaires list">
+          <li class="list--element" *ngFor="let affaire of affaires | async">
+            <a class="list--wrapper" routerLink="/detail-affaire/{{affaire.uuid}}">
               <div class="secondInfos">
                 <div class="badge">
                   En cours
                 </div>
                 <div class="secondInfos--dateTime">
-                  {{intervention.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
+                  {{affaire.dateTimeSent | date:"dd/MM/yyyy à HH:mm"}}
                 </div>
               </div>
               <div class="mainInfos -hasIcon">
                 <div class="mainInfos--title">
-                  {{intervention.natureDeFait}}
+                  {{affaire.natureDeFait}}
                 </div>
-                <div class="mainInfos--icon">
+                <!-- <div class="mainInfos--icon">
                   <img src="assets/natureDeFaits/accident-de-voiture.png" alt="">
-                </div>
+                </div> -->
               </div>
             </a>
           </li>
         </ul>
       </div>
     </div>
-    <div class="evenement--endAction" *ngIf="!evenement.closed">
+    <!-- <div class="evenement--endAction" *ngIf="!evenement.closed">
       <button class="btn" (click)="closeEvenement()">Événement terminé</button>
-    </div>
+    </div> -->
   </div>
 </div>

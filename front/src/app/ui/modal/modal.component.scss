@@ -7,10 +7,23 @@
     top: 50%;
     left: 50%;
     width: 80%;
-    max-width: 700px;
+    max-width: 450px;
     transform: translate(-50%, -50%);
     z-index: 9000;
     padding: 20px 16px;
+    box-shadow: 0px 24px 38px rgba(0, 0, 0, 0.14), 0px 9px 46px rgba(0, 0, 0, 0.12), 0px 11px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  &--title {
+    font-family: $secondaryFont;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  &--description {
+    margin-bottom: 16px;
+    font-family: $secondaryFont;
+    line-height: 23px;
+    letter-spacing: 0.5px;
   }
   &--overlay {
     position: fixed;
@@ -21,5 +34,14 @@
     background: $darkestPrimary;
     z-index: 9000;
     opacity: 0.7;
+  }
+  &--close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    svg {
+      fill: $darkestGrey;
+    }
   }
 }

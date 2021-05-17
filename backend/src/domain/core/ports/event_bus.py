@@ -34,9 +34,7 @@ class InMemoryEventBus(AbstractEventBus):
 
     def publish(self, message: Message, uow: AbstractUnitOfWork = None) -> List[Any]:
         results = []
-        current_app.logger.info(self._subscriptions[message.topic])
         for callback in set(self._subscriptions[message.topic]):
-            current_app.logger.debug(f"callback {callback}")
             if isinstance(message, events.Event):
                 self._handle_event(message, callback=callback, uow=uow)
             elif isinstance(message, commands.Command):
@@ -49,7 +47,6 @@ class InMemoryEventBus(AbstractEventBus):
     @staticmethod
     def _handle_event(event: events.Event, callback: Callable, uow: AbstractUnitOfWork):
         try:
-            current_app.logger.debug('handling event %s with handler %s', event, callback)
             callback(event, uow=uow)
         except Exception:
             current_app.logger.exception('Exception handling event %s', event)

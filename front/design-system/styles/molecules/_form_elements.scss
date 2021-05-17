@@ -5,6 +5,7 @@
         width: 100%;
         position: relative;
         text-align: left;
+        box-sizing: border-box;
         .icon {
             position: absolute;
             right: 10px;
@@ -22,7 +23,7 @@
         & + label {
             position: relative;
             color: $darkestPrimary;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             padding: 0;
             padding-left: 26px;
             top: 0;
@@ -33,12 +34,6 @@
             &:before {
                 content: '';
                 position: absolute;
-                left: 0;
-                top: -2px;
-                width: 18px;
-                height: 18px;
-                border: 2px solid $primary;
-                border-radius: 2px;
                 background: none;
                 box-sizing: border-box;
             }
@@ -46,12 +41,6 @@
             &:after {
                 content: "";
                 position: absolute;
-                top: -1px;
-                left: 6px;
-                width: 6px;
-                height: 10px;
-                border: solid $white;
-                border-width: 0 2px 2px 0;
                 transition: all .2s ease-in-out;
             }
         }
@@ -66,21 +55,53 @@
             transform: scale(1);
         }
         &:checked + label:before {
-            background: $primary;
         }
     }
 
-    &__checkbox:checked + label:after {
-        transform: scale(1) rotate(45deg);
+    &__checkbox {
+        & + label {
+            &:before {
+                left: 2px;
+                top: -2px;
+                width: 18px;
+                height: 18px;
+                border: 2px solid $primary;
+                border-radius: 2px;
+                background: none;
+                box-sizing: border-box;
+            }
+
+            &:after {
+                top: -1px;
+                left: 8px;
+                width: 6px;
+                height: 10px;
+                border: solid $white;
+                border-width: 0 2px 2px 0;
+            }
+        }
+        &:checked {
+            + label {
+                &:before {
+                    background: $primary;
+                }
+                &:after {
+                    transform: scale(1) rotate(45deg);
+                }
+            }
+        }
     }
 
     &__radio {
         & + label {
-
             &:before {
+                background: transparent;
                 width: 20px;
                 height: 20px;
                 border-radius: 100%;
+                left: 2px;
+                top: 2px;
+                border: 2px solid $primary;
             }
 
             &:after {
@@ -97,7 +118,6 @@
     }
 
     &__label {
-        pointer-events: none;
         line-height: 16px;
         position: absolute;
         background: white;
@@ -166,6 +186,13 @@
         }
         &::placeholder {
             color: #999;
+            margin: 0 38px 0 0px;
+        }
+    }
+
+    &__select {
+        & + label {
+            pointer-events: none;
         }
     }
 

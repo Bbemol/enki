@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Callable, Coroutine
+from typing import Any, Callable, Coroutine, Dict, Union
 from uuid import uuid4
 
 from domain.affairs.entities.affair_entity import AffairEntity
-from domain.core.topics import AffairCreatedTopic, Topic, CreateUserTopic, MeetingCreatedTopic
+from domain.core.topics import AffairCreatedTopic, Topic, CreateUserTopic, MeetingCreatedTopic, MessageCreatedTopic, \
+    UserEventInvitationTopic
+from domain.evenements.entities.evenement_entity import EvenementEntity
 from domain.evenements.entities.meeting_entity import MeetingEntity
+from domain.evenements.entities.message_entity import MessageEntity
 from domain.users.entities.user import UserEntity
 
 EventCallback = Callable[[Any], Coroutine[Any, Any, Any]]
@@ -25,6 +28,12 @@ class Event:
 class AffairCreatedEvent(Event):
     data: AffairEntity
     topic: Topic = AffairCreatedTopic
+
+
+@dataclass
+class UserEventInvitationCreated(Event):
+    data: Dict[str, str]
+    topic: Topic = UserEventInvitationTopic
 
 
 @dataclass

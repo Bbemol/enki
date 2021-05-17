@@ -11,8 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SearchContactPipe } from './search-contact/search-contact.pipe';
 import { UiModule } from '../ui/ui.module';
 import { UserInfoGuard } from '../guards/user-info.guard';
-import { SearchStructureComponent } from './search-structure.component';
 import { SearchEtablissementComponent } from '../search-etablissement/search-etablissement.component';
+import { DirectivesModule } from '../directives.module';
+import { PipesModule } from '../pipes.module';
 
 const routes : Routes = [
   {
@@ -39,19 +40,19 @@ const routes : Routes = [
           {
             path: 'contactdetail/:uuid',
             component: ContactDetailComponent
+          },
+          {
+            path: 'contactadd',
+            component: ContactAddComponent,
+            children: [
+              {
+                path: 'searchstructure',
+                component: SearchEtablissementComponent
+              }
+            ]
           }
         ]
       },
-      {
-        path: 'contactadd',
-        component: ContactAddComponent,
-        children: [
-          {
-            path: 'searchstructure',
-            component: SearchEtablissementComponent
-          }
-        ]
-      }
     ]
   }
 ]
@@ -63,11 +64,12 @@ const routes : Routes = [
     ContactAddComponent,
     AnnuaireComponent,
     SearchContactPipe,
-    SearchStructureComponent
   ],
   providers: [AnnuaireService],
   imports: [
     CommonModule,
+    DirectivesModule,
+    PipesModule,
     ReactiveFormsModule,
     UiModule,
     RouterModule.forChild(routes)

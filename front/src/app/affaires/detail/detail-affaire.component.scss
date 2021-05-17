@@ -1,0 +1,66 @@
+@import "../../../../design-system/styles/variables";
+
+.affaire {
+  list-style: none;
+  margin-bottom: 30px;
+}
+.localisation {
+  border-bottom: 1px solid grey;
+  padding-bottom: 24px;
+  &--details {
+    margin-bottom: 12px;
+  }
+}
+.icon-pin, .icon-layers {
+  width: 24px;
+  height: 24px;
+}
+.niveauAlerte {
+  color: $darkestGrey;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  font-family: $secondaryFont;
+  .icon-notification {
+    fill: $darkerGrey;
+    margin: 0 2px;
+    &.-active {
+      fill: $red;
+    }
+  }
+}
+.evenement {
+  padding: 24px 16px;
+  background: $blueGrey;
+  .icon {
+    fill: $primary;
+  }
+  &--description {
+    margin-bottom: 16px;
+  }
+  &--select {
+    select {
+      width: 100%;
+    }
+  }
+
+}
+
+.map {
+  margin-bottom: 16px;
+}
+.infosPrincipales {
+  padding: 0 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  &--icon {
+    margin-right: 16px;
+    display: flex;
+  }
+  &--dateTemps {
+    font-size: 17px;
+    font-family: $secondaryFont;
+    color: $darkestGrey;
+  }
+}

@@ -11,7 +11,7 @@
 $tiny: 480px !default;
 $medium: 768px !default;
 $cols: 12 !default;
-
+$gutter: null;
 // classic Grid
 [class*=" grid-"],
 [class^="grid-"] {
@@ -21,10 +21,10 @@ $cols: 12 !default;
 
     // gutters
     @if variable_exists(grid-gutters) {
-      $gutter: $grid-gutters !global;
+      $gutter: $grid-gutters;
     }
     @else {
-      $gutter: ( '': 1rem, '-l': 2rem, '-xl': 4rem ) !global;
+      $gutter: ( '': 1rem, '-l': 2rem, '-xl': 4rem );
     }
     @each $affix, $size in $gutter {
       &.has-gutter#{$affix} {
@@ -44,10 +44,10 @@ $cols: 12 !default;
 
     // gutters
     @if variable_exists(grid-gutters) {
-      $gutter: $grid-gutters !global;
+      $gutter: $grid-gutters;
 
     } @else {
-      $gutter: ( '': 1rem, '-l': 2rem, '-xl': 4rem ) !global;
+      $gutter: ( '': 1rem, '-l': 2rem, '-xl': 4rem );
     }
     @each $affix, $size in $gutter {
       &.has-gutter#{$affix} {

@@ -1,7 +1,7 @@
 <div class="title-container">
   <h1 class="h1-title">Événements</h1>
   <div class="subtitle">
-    Mise à jour il y a ... minutes
+    Mise à jour il y a 2 minutes
   </div>
 </div>
 <div class="head-tab">
@@ -23,7 +23,7 @@
     <a [routerLink]="['/evenements/', evenement.uuid]" class="list--wrapper">
       <div class="secondInfos">
         <div class="secondInfos--dateTime">
-          {{evenement.created_at | date:"dd/MM/yyyy à HH:mm":"UTC/GMT+2"}}
+          {{evenement.started_at | date:"dd/MM/yyyy à HH:mm":"UTC/GMT+2"}}
         </div>
         <!-- <div class="badge" *ngIf="evenement.closed === null">
           En cours
@@ -40,6 +40,8 @@
     </a>
   </div>
 </div>
-<div class="action action--add" routerLink="/evenements/create">
-  <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
+<div class="actions">
+  <div class="action actions--element action--add" routerLink="/evenements/create">
+    <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
+  </div>
 </div>

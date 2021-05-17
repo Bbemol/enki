@@ -1,0 +1,70 @@
+@import '../../../../design-system/styles/variables';
+@import '../../../../design-system/styles/mixins';
+
+.tabbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: $lightestGrey;
+  height: $headerSize;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid $grey;
+  z-index: 1;
+  left: 0;
+  @include mediaquery(desktop) {
+    position: relative;
+    background: transparent;
+    width: 450px;
+    border: 0;
+  }
+  &--sharebtn {
+    display: none;
+    @include mediaquery(desktop) {
+      display: flex;
+      margin-bottom: 0;
+    }
+  }
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  font-family: $secondaryFont;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+  color: $darkerGrey;
+  height: 100%;
+  @include mediaquery(desktop) {
+    font-size: 17px;
+    flex-direction: row;
+  }
+  &--sharetab {
+    @include mediaquery(desktop) {
+      display: none;
+    }
+  }
+  svg {
+    fill: $darkerGrey;
+    @include mediaquery(desktop) {
+      margin-right: 8px; 
+    }
+  }
+  &--label {
+    display: block;
+    line-height: 12px;
+  }
+  &.-active {
+    color: $primary;
+    @include mediaquery(desktop) {
+      border-bottom: 3px solid $primary;
+    }
+    svg {
+      fill: $primary;
+    }
+  }
+}

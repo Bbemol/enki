@@ -7,10 +7,10 @@ import data from '../../data/interventionsx10.json';
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const interventions = data.affairs;
-    return { interventions };
+    const affaires = data.affairs;
+    return { affaires };
   }
-  genId(interventions: any): number {
-    return interventions.length > 0 ? Math.max(...interventions.map(inter => inter.id)) + 1 : 11;
+  genId(affaires: any): number {
+    return affaires.length > 0 ? Math.max(...affaires.map(inter => inter.id)) + 1 : 11;
   }
 }

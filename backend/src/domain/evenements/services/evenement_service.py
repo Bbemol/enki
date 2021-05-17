@@ -8,6 +8,7 @@ from marshmallow import ValidationError
 
 from domain.affairs.entities.simple_affair_entity import SimpleAffairEntity
 from domain.affairs.schema.simple_affair import SimpleAffairSchema
+from domain.core.events import UserEventInvitationCreated
 from domain.evenements.entities.evenement_entity import EvenementEntity, EvenementRoleType, UserEvenementRole
 from domain.evenements.entities.message_entity import MessageEntity
 from domain.evenements.schemas.message_tag_schema import MessageSchema
@@ -16,6 +17,7 @@ from domain.evenements.services.message_service import MessageService
 from domain.users.entities.group import LocationEntity
 from domain.users.entities.user import UserEntity
 from domain.users.schemas.user import UserSchema
+from entrypoints.extensions import event_bus
 from service_layer.unit_of_work import AbstractUnitOfWork
 
 
@@ -27,27 +29,36 @@ class EvenementService:
                       uow: AbstractUnitOfWork):
         creator_id = data.pop("creator_id")
         try:
-            current_app.logger.info(f"data {data}")
             evenement: EvenementEntity = EvenementService.schema().load(data)
-            current_app.logger.info(f"evenement.location_id {evenement.location_id}")
+
         except ValidationError as ve:
             raise ve
 
         with uow:
 
             user: UserEntity = uow.user.get_by_uuid(uuid=creator_id)
+            user_event_role: UserEvenementRole = UserEvenementRole(
+                uuid=str(uuid4()),
+                user_id=user.uuid,
+                evenement_id=evenement.uuid,
+                type=EvenementRoleType.CREATOR
+            )
             if evenement.uuid:
                 location: LocationEntity = uow.group.get_location_by_uuid(evenement.location_id)
             _ = uow.evenement.add(evenement)
             evenement.set_location(location)
             evenement.creator = user
-            final_evenement: UserEntity = uow.evenement.get_by_uuid(uuid=evenement.uuid)
-            return EvenementService.schema().dump(final_evenement)
+
+            user_event_role.user = user
+            evenement.add_user_role(user_role=user_event_role)
+            evenement_uuid = str(evenement.uuid)
+
+        final_evenement: EvenementEntity = uow.evenement.get_by_uuid(uuid=evenement_uuid)
+        return EvenementService.schema().dump(final_evenement)
 
     @staticmethod
     def get_by_uuid(uuid: str, uow: AbstractUnitOfWork) -> Dict[str, Any]:
         with uow:
-            current_app.logger.info(uow.evenement.get_by_uuid(uuid=uuid))
             return EvenementService.schema().dump(uow.evenement.get_by_uuid(uuid=uuid))
 
     @staticmethod
@@ -63,8 +74,12 @@ class EvenementService:
             )
             user_event_role.user = user
             evenement.add_user_role(user_role=user_event_role)
-
-            return UserSchema().dump(user)
+            event_bus.publish(UserEventInvitationCreated(data={
+                "email": user.email,
+                "evenement_id": evenement.uuid,
+                "evenement_title": evenement.title
+            }))
+            return UserSchema().dump(uow.user.get_by_uuid(uuid=user_id))
 
     @staticmethod
     def change_user_role(uuid: str, user_id: str, role_type: EvenementRoleType, uow: AbstractUnitOfWork) -> Dict[
@@ -96,13 +111,6 @@ class EvenementService:
             return EvenementService.schema(many=True).dump(evenements)
 
     @staticmethod
-    def get_all_messages_and_affairs(evenement_id: str, uow: AbstractUnitOfWork):
-        with uow:
-            messages: List[MessageEntity] = uow.message.get_messages_by_query(evenement_id=evenement_id,
-                                                                              tag_ids=[])
-            return messages
-
-    @staticmethod
     def list_affairs_by_evenement(evenement_id: str, uow: AbstractUnitOfWork) -> List[SimpleAffairEntity]:
         with uow:
             simple_affairs: List[SimpleAffairEntity] = uow.simple_affair.get_by_evenement(uuid=evenement_id)
@@ -132,16 +140,30 @@ class EvenementService:
     def list_messages(uuid: str, uow: AbstractUnitOfWork):
         with uow:
             evenement: EvenementEntity = uow.evenement.get_by_uuid(uuid=uuid)
-            return MessageSchema(many=True).dump(evenement.get_messages())
+            to_return = []
+            for message in evenement.get_messages():
+
+                    to_return.append(MessageSchema().dump(message))
+
+
+            return to_return
 
     @staticmethod
-    def list_messages_by_query(uuid: str, tag_ids: Union[str, List[str], None], uow: AbstractUnitOfWork) -> List[
-        Dict[str, Any]]:
+    def list_messages_by_query(uuid: str,
+                               creator_id: str,
+                               tag_ids: Union[str, List[str], None],
+                               uow: AbstractUnitOfWork) -> List[Dict[str, Any]]:
         if isinstance(tag_ids, str):
             tag_ids = [tag_ids]
+
+
         with uow:
+            user = uow.user.get_by_uuid(uuid=creator_id)
             _ = uow.evenement.get_by_uuid(uuid=uuid)
-            messages: List[MessageEntity] = uow.message.get_messages_by_query(evenement_id=uuid, tag_ids=tag_ids)
+            messages: List[MessageEntity] = uow.message.get_messages_by_query(
+                evenement_id=uuid,
+                restricted_group_id=user.position.group_id,
+                tag_ids=tag_ids)
             return MessageService.schema(many=True).dump(messages)
 
     @staticmethod
@@ -156,5 +178,5 @@ class EvenementService:
     @staticmethod
     def create_dataframe(uuid: str, uow: AbstractUnitOfWork) -> pd.DataFrame:
         entries = EvenementService.create_list_of_dict_entries(uuid=uuid, uow=uow)
-        df = pd.DataFrame(entries)
+        df = pd.DataFrame(entries).sort_values("created_at", ascending=False)
         return df

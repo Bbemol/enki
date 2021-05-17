@@ -1,8 +1,7 @@
 from typing import Dict, Any
 
-from flask import current_app
 from flask_restful import Resource
-
+from flask import current_app, g
 from domain.evenements.services.message_service import MessageService
 
 
@@ -112,13 +111,17 @@ class MessageTagResource(WithMessageRepoResource):
         return {"data": tag, "message": "success"}, 200
 
     def put(self, uuid: str, tag_uuid: str):
+        user_uuid=g.user_info["id"]
         MessageService.add_tag_to_message(uuid,
                                           tag_uuid=tag_uuid,
+                                          user_uuid=user_uuid,
                                           uow=current_app.context)
         return {"message": f"tag {tag_uuid} successfully added from message {uuid}"}, 201
 
     def delete(self, uuid: str, tag_uuid: str):
+        user_uuid = g.user_info["id"]
         MessageService.remove_tag_to_message(uuid,
                                              tag_uuid=tag_uuid,
+                                             user_uuid=user_uuid,
                                              uow=current_app.context)
         return {"message": f"tag {tag_uuid} successfully deleted from message {uuid}"}, 202

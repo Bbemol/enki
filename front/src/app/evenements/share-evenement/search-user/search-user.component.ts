@@ -4,9 +4,10 @@ import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { interval, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, debounce, pluck, switchMap } from 'rxjs/operators';
-import { HTTP_DATA } from 'src/app/constants';
-import { Participant } from 'src/app/interfaces/Participant';
-import { User } from 'src/app/interfaces/User';
+import { HTTP_DATA, SEARCH_MIN_CHARS } from 'src/app/constants/constants';
+import { HighlightIncludedCharsPipe } from 'src/app/highlight-included-chars.pipe';
+import { ToastType, User } from 'src/app/interfaces';
+import { ToastService } from 'src/app/toast/toast.service';
 import { UserService } from 'src/app/user/user.service';
 import { environment } from 'src/environments/environment';
 import { EvenementsService } from '../../evenements.service';
@@ -14,7 +15,8 @@ import { EvenementsService } from '../../evenements.service';
 @Component({
   selector: 'app-search-user',
   templateUrl: './search-user.component.html',
-  styleUrls: ['./search-user.component.scss']
+  styleUrls: ['./search-user.component.scss'],
+  providers: [HighlightIncludedCharsPipe]
 })
 export class SearchUserComponent implements OnInit {
   userResults: User[];
@@ -27,12 +29,14 @@ export class SearchUserComponent implements OnInit {
     private evenementsService: EvenementsService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService,
+    private highlightTransform: HighlightIncludedCharsPipe
   ) {
     this.userResults = [];
 
     this.userSearch.valueChanges.subscribe((value: string) => {
-      if (value.length > 2) {
+      if (value.length >= SEARCH_MIN_CHARS) {
         this.subject.next(value)
       }
     })
@@ -66,7 +70,7 @@ export class SearchUserComponent implements OnInit {
         if (error.status === 404) {
           return of([])
         } else {
-          console.error(error)
+          this.toastService.addMessage(`Impossible de rechercher un utilisateur`, ToastType.ERROR)
           return throwError(
             'Something bad happened; please try again later.');
         }
@@ -81,10 +85,28 @@ export class SearchUserComponent implements OnInit {
       this.router.navigate(['..'], { relativeTo: this.activatedRoute});
     })
   }
+
+  getUserNameResult(user: User, searchvalue: string): string {
+    const firstName = this.highlightTransform.transform(user.first_name, searchvalue)
+    const lastName = this.highlightTransform.transform(user.last_name, searchvalue)
+
+    return `${firstName} ${lastName}`
+  }
+  getUserPositionResult(user: User, searchvalue: string): string {
+    const groupLabel = this.highlightTransform.transform(user.position.group.label, searchvalue)
+    const positionLabel = this.highlightTransform.transform(user.position.position.label, searchvalue)
+
+    return `${groupLabel} - ${positionLabel}`
+
+  }
   
   addParticipantsToEvenement(userUUID: string): Observable<User> {
     return this.http.put<any>(`${environment.backendUrl}/events/${this.evenementsService.selectedEvenementUUID.getValue()}/invite/${userUUID}`, {}).pipe(
-      pluck(HTTP_DATA)
+      pluck(HTTP_DATA),
+      catchError((error) => {
+        this.toastService.addMessage(`Impossible d'ajouter un participant à cet événement`, ToastType.ERROR)
+        return throwError(error);
+      })
     )
   }
 }

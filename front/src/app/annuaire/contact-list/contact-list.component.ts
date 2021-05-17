@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Contact } from 'src/app/interfaces/Contact';
+import { Contact } from 'src/app/interfaces';
 import { MobilePrototypeService } from 'src/app/mobile-prototype/mobile-prototype.service';
 import { UserService } from 'src/app/user/user.service';
 

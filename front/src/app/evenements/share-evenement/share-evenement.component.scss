@@ -1,64 +1,30 @@
 @import '../../../../design-system/styles/variables';
-
-.prototype.share--content {
-  height: 526px;
-  + .action {
-    margin-top: -70px;
-    margin-left: 304px;
+@import '../../../../design-system/styles/mixins';
+:host {
+  @include mediaquery(desktop) {
+    position: absolute;
+    top: 0;
+    background: $white;
+    width: 100%;
+    padding-top: 72px;
+    transform: translate(100%, 0);
+    transition: transform 200ms ease-in-out;
+    padding-top: 16px;
+    right: 0;
+    width: 400px;
+    z-index: 6000;
+    height: 100%;
+    overflow: scroll;
+    box-shadow: 0px 0px 8px rgb(0 0 0 / 25%);
+    &.-active {
+      transition: transform 200ms ease-in-out;
+      transform: translate(0, 0);
+    }
   }
 }
 .share {
   padding: 0 16px;
   &--description {
     margin-bottom: 20px;
-  }
-}
-.participants {
-  padding: 16px;
-  background: $blueGrey;
-  &--title {
-    svg {
-      fill: $primary;
-    }
-  }
-  &--user {
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid $lightGrey;
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-  &--infos {
-    padding-bottom: 16px;
-    border-bottom: 1px solid $lightGrey;
-    margin-bottom: 16px;
-  }
-  &--role {
-    display: flex;
-    color: $primary;
-    margin-top: 4px;
-    line-height: 25px;
-    svg {
-      fill: $primary;
-    }
-
-  }
-  &--primaryInfos {
-    color: $darkestPrimary;
-    line-height: 25px;
-  }
-  &--secondaryInfos {
-    color: $darkestGrey;
-    font-family: $secondaryFont;
-    font-size: 16px;
-    line-height: 25px;
-  }
-
-}
-
-.participants--roles {
-  .radio-roles {
-    margin-bottom: 16px;
   }
 }

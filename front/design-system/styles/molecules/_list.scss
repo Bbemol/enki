@@ -1,4 +1,5 @@
 .list {
+  margin-bottom: 16px;
   &--element {
     padding-top: 20px;
     border-bottom: 1px solid $grey;
@@ -12,12 +13,18 @@
     }
   }
   &--wrapper {
-    margin: 0 16px 20px;
+    margin: 0 16px 0;
+    padding-bottom: 20px;
     display: block;
     text-decoration: initial;
   }
   &--labels {
     padding-top: 8px;
+    margin-right: -4px;
+    margin-left: -4px;
+    .badge {
+      margin: 4px;
+    }
   }
 }
 
@@ -34,13 +41,20 @@
     line-height: 25px;
     color: $primary;
     letter-spacing: .5px;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
+    font-family: $secondaryFont;
+    .icon {
+      font-size: 16px;
+    }
     &.-green {
       color: $lightGreen;
     }
     &.-blue {
       color: $lightPrimary;
+    }
+    &.-red {
+      color: $red;
     }
   }
   &--content {
@@ -58,10 +72,11 @@
   align-items: center;
   margin: 0 -4px;
   margin-bottom: 12px;
-  div {
+  .badge {
     margin: 0 4px;
   }
   &--dateTime {
+    margin: 0 4px;
     display: block;
     font-size: 17px;
     font-family: $secondaryFont;

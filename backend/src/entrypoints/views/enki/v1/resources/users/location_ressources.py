@@ -9,6 +9,7 @@ class WithGroupRepoResource(Resource):
     def __init__(self):
         pass
 
+
 class LocationListResource(WithGroupRepoResource):
     """Get all locations
     ---
@@ -47,6 +48,7 @@ class LocationListResource(WithGroupRepoResource):
                    "message": "success",
                }, 200
 
+
 class LocationResource(WithGroupRepoResource):
     """Get specific location
     ---
@@ -78,4 +80,3 @@ class LocationResource(WithGroupRepoResource):
                    "data": GroupService.get_location_by_uuid(uuid=uuid, uow=current_app.context),
                    "message": "success",
                }, 200
-

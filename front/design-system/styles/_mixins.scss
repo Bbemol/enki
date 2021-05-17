@@ -6,3 +6,12 @@
   background: $lightGrey;
   bottom: 0;
 }
+
+@mixin mediaquery ($breakpoint) {
+
+  @if $breakpoint == desktop {
+    @media only screen and (min-width: 740px) {
+      @content;
+    }
+  }
+}

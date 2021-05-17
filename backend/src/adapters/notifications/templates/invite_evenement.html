@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Enki email alerte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+        <tr>
+            <td bgcolor="#E5EDF5" style="padding: 20px 20px;">
+                <p style="margin: 0;" align="center"><a href="#" style=" color: #034EA2;">Visualiser dans un navigateur</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                    <tr>
+                        <td width="260" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                                <tr>
+                                    <td>
+                                        <img src="https://raw.githubusercontent.com/Bbemol/enki-email-alerte/master/assets/Republique_Francaise.jpg" alt="Marque République Française" style="display: block;" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                        <td width="260" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                                <tr>
+                                    <td align="right" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 25px 0 0 0;">
+                                        <p style="margin: 0;">Le {{date.strftime('%d-%m-%Y')}}</p>
+                                        <p style="margin: 0; font-weight: bold;">ENKI</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                    <tr>
+                        <td width="480" align="right" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 25px 0 0 0;">
+                        </td>
+                        <td style="background-color: #16A78B; color: #ffffff; font-family: Arial, sans-serif; font-size: 16px; ">
+                            <p style="margin: 0;" align="center">ÉVÉNEMENT</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff">
+                <table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border-color:#CAD1D8;">
+                    <tr border="0">
+
+                        <td style="font-family: Arial, sans-serif; font-size: 24px; padding: 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                                <tr>
+                                    <td style="font-family: Arial, sans-serif; font-size: 24px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                                            <tr>
+                                                <td>
+                                                    <p style="margin: 0;">{{evenement_title}}</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-family: Arial, sans-serif; font-size: 17px; padding: 5px 0;">
+                                                    <p style="margin: 0; color: #6C8093;">{{date.strftime('%d-%m-%Y à %H:%M')}}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=2 style="font-family: Arial, sans-serif; font-size: 18px; padding: 20px 10px 20px 0;">
+                                        <p style="margin: 0;"><a href="{{evenement_url}}" style="color: #ffffff; text-decoration: none; padding: 10px 20px; background: #034EA2;">Voir l'évènement</a></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 4px;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td bgcolor="#E5EDF5">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                    <tr>
+                        <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 13px; padding: 20px 20px;">
+                            <p style="margin: 0; color: #6C8093;" align="center">
+                                Cet email a été envoyé à <a href="" style="color: #034EA2">{{email_receiver}}</a><br><br>
+                                Vous avez reçu cet email car vous êtes inscrit sur ENKI. <br>
+                                <a href="" style="color: #034EA2">Paramétrez vos préférences de notifications.</a><br><br>
+                                Pour tous renseignements, contactez-nous sur <a href="" style="color: #034EA2">contact@enki.fr</a><br><br><br>
+                                ENKI ©
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

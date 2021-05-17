@@ -62,9 +62,8 @@ class UserListResource(WithUserRepoResource):
 
         args = parser.parse_args()
         query: str = args.get("query")
-        uuids: List[str] = args.get("uuids")
-        uuids_list: List[str] = uuids[0].split(',')
-
+        uuids: str = args.get("uuids")
+        uuids_list: List[str] = uuids.split(',')
         if isinstance(uuids_list, str):
             uuids_list = [uuids_list]
         users = UserService.search_users(query=query, uuids=uuids_list, uow=current_app.context)
@@ -81,8 +80,8 @@ class UserListResource(WithUserRepoResource):
         parser.add_argument('token', type=str, required=False)
         args = parser.parse_args()
         body["uuid"] = g.user_info["id"]
+        body["email"] = g.user_info["email"]
         body["token"] = args.get("token")
-        current_app.logger.info("start creating user")
         command = CreateUser(data=body)
         result = event_bus.publish(command, current_app.context)
         return {

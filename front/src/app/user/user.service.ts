@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Contact } from '../interfaces/Contact';
-import { User } from '../interfaces/User';
+import { Contact, ToastType, User } from 'src/app/interfaces';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,15 @@ export class UserService {
   userExist: boolean;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private toastService: ToastService,
   ) {
     this.user = {
       attributes: {
         fonction: ''
       },
       location: '',
+      location_id: '',
       contacts: [],
       uuid: ''
     };
@@ -29,7 +31,14 @@ export class UserService {
   }
 
   getUserInfo(): Observable<any> {
-    return this.http.get(`${environment.backendUrl}/users/me`)
+    return this.http.get(`${environment.backendUrl}/users/me`).pipe(
+      catchError((error) => {
+        if (error.status !== 404) {
+          this.toastService.addMessage(`Impossible de récupérer les données utilisateurs`, ToastType.ERROR);
+        }
+        return throwError(error)
+      })
+    )
   }
 
   // GET /user/{uuid}/favoriteContacts
@@ -39,9 +48,12 @@ export class UserService {
         map(contacts => {
           this.user.contacts = contacts.data
           return contacts.data
+        }),
+        catchError((error) => {
+          this.toastService.addMessage(`Impossible de récupérer les contacts favoris de l'utilisateur`, ToastType.ERROR);
+          return throwError(error)
         })
       )
-    // return of(this.user.contacts);
   }
   isUserFav(contactId: string): boolean {
     return this.user.contacts.some(contact => contact.uuid === contactId);
@@ -52,6 +64,10 @@ export class UserService {
       .pipe(
         tap(response => {
           this.user.contacts = response.data;
+        }),
+        catchError((error) => {
+          this.toastService.addMessage(`Impossible d'ajouter le contact aux favoris`, ToastType.ERROR);
+          return throwError(error)
         })
       );
   }
@@ -61,6 +77,10 @@ export class UserService {
       .pipe(
         tap(response => {
           this.user.contacts = response.data
+        }),
+        catchError((error) => {
+          this.toastService.addMessage(`Impossible de supprimer le contact aux favoris`, ToastType.ERROR);
+          return throwError(error)
         })
       )
   }

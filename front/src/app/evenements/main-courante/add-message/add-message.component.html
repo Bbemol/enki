@@ -1,12 +1,13 @@
-<app-small-heading title="Nouveau message" backLink="../liste"></app-small-heading>
+<app-small-heading title="Nouveau message" (closeEvent)="close()"></app-small-heading>
 <div class="addMessage">
-  <form action="" class="addMessageForm" [formGroup]="messageGroup" (ngSubmit)="onSubmit()">
-    <div class="enkiSpecialform__group">
-      <input type="text" class="addMessageForm--titleInput" formControlName="title" placeholder="Sans titre" required>
+  <form action="" #f="ngForm" class="addMessageForm" [formGroup]="messageGroup" (ngSubmit)="onSubmit(messageType.RESTRICTED)">
+    <div>
+      <textarea appFocusFormInput formControlName="title" placeholder="Tapez ici votre message" id="test--messageContent" cols="30" rows="3"></textarea>
     </div>
-    <div class="enkiSpecialform__group labelGroup">
+    <div class="counter" [class.-error]="title.invalid && title.errors.maxlength">{{textareaLength}}/{{charactersTitleLimit}} signes</div>
+    <div class="labelGroup">
       <div class="labelGroup--labelList" *ngIf="labelsService.selectedLabels.length > 0">
-        <div class="labelElement labelElement badge badge__inverted" *ngFor="let label of labelsService.selectedLabels">
+        <div class="labelGroup--labelElement badge badge__inverted" *ngFor="let label of labelsService.selectedLabels">
           {{label.title}}
         </div>
       </div>
@@ -19,10 +20,10 @@
         Modifier les labels
       </a>
     </div>
-    <div class="enkiSpecialform__group">
-      <textarea formControlName="content" class="addMessageForm--descriptionTextarea" cols="30" rows="5" placeholder="Appuyer ici pour ajouter une description"></textarea>
+    <div>
+      <textarea formControlName="content" class="addMessageForm--descriptionTextarea" cols="30" rows="3" placeholder="Informations complémentaires"></textarea>
     </div>
-    <div class="enkiSpecialform__group addMedia">
+    <div class="addMedia">
       <div class="previewImage">
         <div class="previewImage--element" *ngFor="let media of listOfMedias">
           <!-- {{media}} -->
@@ -36,12 +37,38 @@
       </label>
       <input id="mediaFile" type="file" formControlName="files" (change)="uploadFile($event)">
     </div>
-    <div class="enkiSpecialForm__group">
-      <input type="submit" class="btn" value="Publier le message">
+    <div>
+      <input type="button" class="btn test--publish-message" value="Publier le message" (click)="openConfirmationModal()" [disabled]="messageGroup.invalid">
     </div>
-
+    <app-modal class="confirmation" title="Confirmation" description="" #confirmation>
+      <p class="confirmation--quote">
+        Une fois publié, votre message apparaitra dans la main courante.
+      </p>
+      <p class="confirmation--note">
+        <svg class="icon-lock"><use xlink:href="#icon-lock"></use></svg>
+        Un message privé est visible uniquement par votre établissement.
+      </p>
+      <div class="enkiform__group btn-group -oneline">
+        <button class="btn -auto" type="button" id="private" value="private" (click)="onSubmit(messageType.RESTRICTED)">
+          <svg class="icon-lock"><use xlink:href="#icon-lock"></use></svg>
+          Privé
+        </button>
+        <button class="btn -auto" type="button" id="public" value="public" (click)="onSubmit(messageType.PUBLIC)">
+          <svg class="icon-unlock"><use xlink:href="#icon-unlock"></use></svg>
+          Public
+        </button>
+      </div>
+    </app-modal>
+    <app-modal class="cancel" title="Confirmation" description="Êtes-vous sûr de vouloir quitter cette page sans publier ?" #cancel>
+      <p class="confirmation--quote">
+        Votre message ne sera pas sauvegardé.
+      </p>
+      <div class="btn-group -right">
+        <button class="btn -transparent -auto" title="Annuler le message" (click)="closeCancelModal()">Annuler</button>
+        <button class="btn -red -auto" (click)="confirmButton.next(true)">Quitter</button>
+      </div>
+    </app-modal>
   </form>
-
   <router-outlet></router-outlet>
 
 </div>

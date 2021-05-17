@@ -17,9 +17,9 @@ fixture `Test as Maire`
       .typeText('#password', 'azeRTY123#')
       .click('#kc-login')
       .click('#hideOnboarding')
-      .click('.burger')
+      .click('.hamburger')
       .click('#mobile-prototype')
-      .click('.burger')
+      .click('.hamburger')
       await Selector('.dashboard')
     })
 
@@ -30,7 +30,7 @@ fixture `Test as Maire`
 
     test('Create `événement`', async t => {
       await t
-      .click('.burger')
+      .click('.hamburger')
       .click('#test--link-evenements')
       .click('.action--add')
       .typeText('#nomEvenement', EVENT_TITLE)
@@ -52,14 +52,14 @@ fixture `Test as Maire`
     test('Add message to `main courante`', async t => {
       await t
       // go to the previously created event
-      .click('.burger')
+      .click('.hamburger')
       .click('#test--link-evenements')
       .click('.evenement--element:first-child')
       .click('#test--maincourante')
       // the main courante should be empty
       // create a new message
       .click('.mc--empty button')
-      .typeText('.addMessageForm--titleInput', MESSAGE_TITLE)
+      .typeText('#test--messageContent', MESSAGE_TITLE)
       .typeText('.addMessageForm--descriptionTextarea', MESSAGE_DESCRIPTION)
       // BEGIN label testing
       .click('.labelGroup--labelLink')
@@ -71,6 +71,7 @@ fixture `Test as Maire`
       .click('.fullscreen-form--cancel')
       // END label testing
       .setFilesToUpload('#mediaFile', './gymnase.jpg')
+      .click('.test--publish-message')
       .click('.addMessageForm input[type="submit"]')
       // verify message infos from the list of messages
       .expect(Selector('.list--element:first-child .mainInfos--title').innerText).contains('MAIRE')
@@ -94,7 +95,7 @@ fixture `Test as Maire`
     const positionOption = positionSelect.find('option')
     test('Create contact and add to favorite', async t => {
       await t
-        .click('.burger')
+        .click('.hamburger')
         .click('#test--link-annuaire')
         // add contact to annuaire
         .click('.action--add')
@@ -156,7 +157,7 @@ fixture `Test as Maire`
 
     test('Share event with other user', async t => {
       await t
-      .click('.burger')
+      .click('.hamburger')
       .click('#test--link-evenements')
       .click('.evenement--element:first-child')
       .click('#test--share')

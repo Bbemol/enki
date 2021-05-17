@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-main-courante',
   templateUrl: './main-courante.component.html',
-  styleUrls: []
+  styleUrls: ['./main-courante.scss']
 })
 export class MainCouranteComponent implements OnInit {
 
@@ -11,6 +11,10 @@ export class MainCouranteComponent implements OnInit {
 
     ) {
 
+  }
+
+  onActivate(): void {
+    document.querySelector('.base').scroll(0,0)
   }
 
   ngOnInit(): void {

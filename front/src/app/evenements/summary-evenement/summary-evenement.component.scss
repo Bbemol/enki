@@ -1,11 +1,21 @@
 @import "../../../../design-system/styles/variables";
+@import "../../../../design-system/styles/mixins";
+
+:host {
+  @include mediaquery(desktop) {
+    height: calc(100vh - #{$headerSize * 2})
+  }
+}
 
 .evenement {
+  display: grid;
+  @include mediaquery(desktop) {
+    height: 100%;
+    grid-template-columns: 5fr 8fr;
+    grid-template-rows: auto 1fr;
+  }
   .title-with-icon {
     padding: 16px 16px 0;
-  }
-  &--over {
-    
   }
   &--title {
     color: $white;
@@ -23,12 +33,23 @@
   &--endAction {
     padding: 0 16px;
   }
+  &--body {
+    overflow-y: scroll;
+  }
 }
 
 .map-container {
   height: 200px;
+  @include mediaquery(desktop) {
+    height: 100%;
+  }
 }
-
+.map {
+  @include mediaquery(desktop) {
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 2;
+  }
+}
 .map-frame {
   height: 100%;
 }
